@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS draft_posts (
   story_candidate_id   INTEGER     NOT NULL REFERENCES story_candidates(id),
   body                 TEXT        NOT NULL,
   source_citation      TEXT        NOT NULL,
+  source_url           TEXT        NOT NULL DEFAULT '',
+  source_name          TEXT        NOT NULL DEFAULT '',
   hashtags             TEXT[]      NOT NULL DEFAULT '{}',
   status               TEXT        NOT NULL DEFAULT 'draft'
                        CHECK (status IN ('draft', 'approved', 'rejected', 'published')),
@@ -46,6 +48,14 @@ CREATE TABLE IF NOT EXISTS draft_posts (
   created_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Add columns to draft_posts if running against an already-migrated DB
+DO $$ BEGIN
+  ALTER TABLE draft_posts ADD COLUMN IF NOT EXISTS source_url TEXT NOT NULL DEFAULT '';
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE draft_posts ADD COLUMN IF NOT EXISTS source_name TEXT NOT NULL DEFAULT '';
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
 
 CREATE TABLE IF NOT EXISTS post_records (
   id               SERIAL PRIMARY KEY,

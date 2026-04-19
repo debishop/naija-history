@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "db:migrate": "ts-node src/db/migrate.ts",
-    "cli:fetch-story": "ts-node src/cli/fetch-story.ts"
+    "cli:fetch-story": "ts-node src/cli/fetch-story.ts",
+    "cli:generate-post": "ts-node src/cli/generate-post.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "vitest": "^4.1.4"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
     "dotenv": "^17.4.2",
     "pg": "^8.20.0"
   }
