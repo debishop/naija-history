@@ -9,7 +9,6 @@ import { notifySlack } from '../services/notifications';
 import { getPool } from '../db/pool';
 
 const APPROVAL_THRESHOLD = parseInt(process.env['APPROVAL_THRESHOLD'] ?? '20', 10);
-const GITHUB_WORKFLOW_URL = process.env['GITHUB_WORKFLOW_URL'] ?? '';
 
 interface PublishedCountRow {
   count: string;
@@ -52,15 +51,11 @@ async function main(): Promise<void> {
     if (publishedCount < APPROVAL_THRESHOLD) {
       await setDraftStatus(draft.id, 'pending_approval');
 
-      const approvalUrl = GITHUB_WORKFLOW_URL ||
-        'https://github.com — configure GITHUB_WORKFLOW_URL secret';
-
       await notifySlack({
         event: 'approval_required',
         draftId: draft.id,
         body: draft.body,
         hashtags: draft.hashtags,
-        approvalUrl,
       });
 
       console.log(`Draft ${draft.id} is pending approval (${publishedCount}/${APPROVAL_THRESHOLD} published so far).`);
