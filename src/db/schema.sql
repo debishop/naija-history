@@ -7,15 +7,32 @@ CREATE TABLE IF NOT EXISTS story_candidates (
   id            SERIAL PRIMARY KEY,
   source_url    TEXT        NOT NULL,
   source_domain TEXT        NOT NULL,
+  source_name   TEXT        NOT NULL DEFAULT '',
   title         TEXT        NOT NULL,
   summary       TEXT,
   raw_content   TEXT,
+  content_hash  TEXT        UNIQUE,
+  published_at  TIMESTAMPTZ,
   fetched_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   status        TEXT        NOT NULL DEFAULT 'pending'
                 CHECK (status IN ('pending', 'validated', 'rejected')),
   reject_reason TEXT,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Add columns to existing tables if running against an already-migrated DB
+DO $$ BEGIN
+  ALTER TABLE story_candidates ADD COLUMN IF NOT EXISTS source_name TEXT NOT NULL DEFAULT '';
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE story_candidates ADD COLUMN IF NOT EXISTS content_hash TEXT;
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE story_candidates ADD COLUMN IF NOT EXISTS published_at TIMESTAMPTZ;
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_story_candidates_content_hash ON story_candidates(content_hash);
+EXCEPTION WHEN duplicate_table THEN NULL; END $$;
 
 CREATE TABLE IF NOT EXISTS draft_posts (
   id                   SERIAL PRIMARY KEY,
