@@ -1,0 +1,33 @@
+name: Publish Approved Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_id:
+        description: "Draft post ID to approve and publish"
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Approve and publish draft
+        run: npm run cli:approve-post
+        env:
+          DRAFT_ID: ${{ inputs.draft_id }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

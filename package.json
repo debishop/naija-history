@@ -14,7 +14,10 @@
     "cli:fetch-story": "ts-node src/cli/fetch-story.ts",
     "cli:generate-post": "ts-node src/cli/generate-post.ts",
     "cli:publish-post": "ts-node src/cli/publish-post.ts",
-    "cli:snapshot-engagement": "ts-node src/cli/snapshot-engagement.ts"
+    "cli:snapshot-engagement": "ts-node src/cli/snapshot-engagement.ts",
+    "cli:run-pipeline": "ts-node src/cli/run-pipeline.ts",
+    "cli:approve-post": "ts-node src/cli/approve-post.ts",
+    "cli:check-snapshots": "ts-node src/cli/check-snapshots.ts"
   },
   "keywords": [],
   "author": "",

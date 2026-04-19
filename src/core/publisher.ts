@@ -9,6 +9,8 @@ export interface PostRecord {
   publishedAt: Date;
   status: 'published' | 'failed' | 'retrying';
   errorMessage?: string;
+  scheduledSnapshotAt: Date | null;
+  snapshotTaken: boolean;
 }
 
 interface DbDraftRow {
@@ -29,6 +31,8 @@ interface DbPostRecordRow {
   published_at: Date;
   status: string;
   error_message: string | null;
+  scheduled_snapshot_at: Date | null;
+  snapshot_taken: boolean;
 }
 
 function rowToPostRecord(row: DbPostRecordRow): PostRecord {
@@ -39,6 +43,8 @@ function rowToPostRecord(row: DbPostRecordRow): PostRecord {
     publishedAt: row.published_at,
     status: row.status as PostRecord['status'],
     errorMessage: row.error_message ?? undefined,
+    scheduledSnapshotAt: row.scheduled_snapshot_at ?? null,
+    snapshotTaken: row.snapshot_taken ?? false,
   };
 }
 
@@ -112,7 +118,8 @@ async function writePostRecord(
   const result = await pool.query<DbPostRecordRow>(
     `INSERT INTO post_records (draft_post_id, facebook_post_id, status, error_message)
      VALUES ($1, $2, $3, $4)
-     RETURNING id, draft_post_id, facebook_post_id, published_at, status, error_message`,
+     RETURNING id, draft_post_id, facebook_post_id, published_at, status, error_message,
+               scheduled_snapshot_at, snapshot_taken`,
     [Number(draftPostId), facebookPostId, status, errorMessage ?? null]
   );
   return rowToPostRecord(result.rows[0]);
@@ -123,6 +130,20 @@ async function markDraftPublished(draftPostId: string): Promise<void> {
   await pool.query(
     `UPDATE draft_posts SET status = 'published', updated_at = NOW() WHERE id = $1`,
     [Number(draftPostId)]
+  );
+}
+
+/**
+ * Sets scheduled_snapshot_at to NOW() + 48 hours for the given post record.
+ * Called after a post is published (either inline or via approve-post CLI).
+ */
+export async function scheduleEngagementSnapshot(postRecordId: string): Promise<void> {
+  const pool = getPool();
+  await pool.query(
+    `UPDATE post_records
+     SET scheduled_snapshot_at = NOW() + INTERVAL '48 hours'
+     WHERE id = $1`,
+    [Number(postRecordId)]
   );
 }
 

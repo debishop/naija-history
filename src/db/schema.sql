@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS draft_posts (
   source_name          TEXT        NOT NULL DEFAULT '',
   hashtags             TEXT[]      NOT NULL DEFAULT '{}',
   status               TEXT        NOT NULL DEFAULT 'draft'
-                       CHECK (status IN ('draft', 'approved', 'rejected', 'published')),
+                       CHECK (status IN ('draft', 'approved', 'rejected', 'published', 'pending_approval')),
   reject_reason        TEXT,
   created_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -79,6 +79,19 @@ EXCEPTION WHEN duplicate_column THEN NULL; END $$;
 DO $$ BEGIN
   ALTER TABLE post_records ADD COLUMN IF NOT EXISTS error_message TEXT;
 EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+-- v2: autonomous pipeline columns
+DO $$ BEGIN
+  ALTER TABLE post_records ADD COLUMN IF NOT EXISTS scheduled_snapshot_at TIMESTAMPTZ;
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE post_records ADD COLUMN IF NOT EXISTS snapshot_taken BOOLEAN NOT NULL DEFAULT false;
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+-- v2: allow pending_approval status on draft_posts (drop and re-add constraint)
+DO $$ BEGIN
+  ALTER TABLE draft_posts DROP CONSTRAINT IF EXISTS draft_posts_status_check;
+  ALTER TABLE draft_posts ADD CONSTRAINT draft_posts_status_check
+    CHECK (status IN ('draft', 'approved', 'rejected', 'published', 'pending_approval'));
+EXCEPTION WHEN others THEN NULL; END $$;
 
 CREATE TABLE IF NOT EXISTS engagement_records (
   id               SERIAL PRIMARY KEY,
