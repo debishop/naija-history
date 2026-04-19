@@ -71,3 +71,58 @@ export async function publishPost(draft: DraftPost): Promise<string> {
 
   return json.id;
 }
+
+export interface RawEngagement {
+  reactions: number;
+  comments: number;
+  shares: number;
+  reach: number;
+}
+
+interface GraphApiEngagementResponse {
+  id?: string;
+  error?: GraphApiError;
+  reactions?: { summary?: { total_count?: number } };
+  comments?: { summary?: { total_count?: number } };
+  shares?: { count?: number };
+  insights?: {
+    data?: Array<{
+      name: string;
+      values?: Array<{ value?: number }>;
+    }>;
+  };
+}
+
+/**
+ * Fetches engagement metrics for a published Facebook post.
+ * Returns reaction count, comment count, share count, and unique reach.
+ */
+export async function getPostEngagement(facebookPostId: string): Promise<RawEngagement> {
+  const secrets = getSecrets();
+  const pageAccessToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+
+  const fields = 'reactions.summary(true),comments.summary(true),shares,insights.metric(post_impressions_unique)';
+  const url = `${GRAPH_API_BASE}/${facebookPostId}?fields=${encodeURIComponent(fields)}&access_token=${encodeURIComponent(pageAccessToken)}`;
+
+  const response = await fetch(url);
+  const json = (await response.json()) as GraphApiEngagementResponse;
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} with no error body`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+
+  const reachEntry = json.insights?.data?.find((d) => d.name === 'post_impressions_unique');
+  const reach = reachEntry?.values?.[0]?.value ?? 0;
+
+  return {
+    reactions: json.reactions?.summary?.total_count ?? 0,
+    comments: json.comments?.summary?.total_count ?? 0,
+    shares: json.shares?.count ?? 0,
+    reach,
+  };
+}
