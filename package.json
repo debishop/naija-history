@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "ts-node src/db/migrate.ts",
     "cli:fetch-story": "ts-node src/cli/fetch-story.ts",
-    "cli:generate-post": "ts-node src/cli/generate-post.ts"
+    "cli:generate-post": "ts-node src/cli/generate-post.ts",
+    "cli:publish-post": "ts-node src/cli/publish-post.ts"
   },
   "keywords": [],
   "author": "",

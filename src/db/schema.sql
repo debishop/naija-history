@@ -60,10 +60,25 @@ EXCEPTION WHEN duplicate_column THEN NULL; END $$;
 CREATE TABLE IF NOT EXISTS post_records (
   id               SERIAL PRIMARY KEY,
   draft_post_id    INTEGER     NOT NULL REFERENCES draft_posts(id),
-  facebook_post_id TEXT        NOT NULL UNIQUE,
+  facebook_post_id TEXT        UNIQUE,
   published_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  status           TEXT        NOT NULL DEFAULT 'published'
+                   CHECK (status IN ('published', 'failed', 'retrying')),
+  error_message    TEXT,
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Add columns to post_records if running against an already-migrated DB
+DO $$ BEGIN
+  ALTER TABLE post_records ALTER COLUMN facebook_post_id DROP NOT NULL;
+EXCEPTION WHEN others THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE post_records ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'published'
+    CHECK (status IN ('published', 'failed', 'retrying'));
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER TABLE post_records ADD COLUMN IF NOT EXISTS error_message TEXT;
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
 
 CREATE TABLE IF NOT EXISTS engagement_records (
   id               SERIAL PRIMARY KEY,
