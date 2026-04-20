@@ -17,15 +17,13 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
       - name: Install dependencies
         run: npm ci
 
       - name: Run pipeline
-        run: npm run cli:run-pipeline
+        run: doppler run -- npm run cli:run-pipeline
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          APPROVAL_THRESHOLD: ${{ vars.APPROVAL_THRESHOLD }}
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}

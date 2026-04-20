@@ -6,15 +6,15 @@
  * then either triggers the GitHub Actions publish workflow (approve) or
  * marks the draft as rejected in the database (reject).
  *
- * Required environment variables (set via Doppler → Supabase secrets sync):
- *   SLACK_SIGNING_SECRET       — from Slack app "Basic Information" page
- *   GITHUB_TOKEN               — PAT with actions:write scope
- *   GITHUB_OWNER               — GitHub repo owner (user or org)
- *   GITHUB_REPO                — GitHub repo name
- *   SUPABASE_URL               — auto-injected by Supabase runtime
- *   SUPABASE_SERVICE_ROLE_KEY  — auto-injected by Supabase runtime
+ * Required environment variable (set via `supabase secrets set`):
+ *   DOPPLER_TOKEN  — service token for the Doppler nigeria-history-pipeline/production config
+ *
+ * All other secrets (SLACK_SIGNING_SECRET, GITHUB_TOKEN, GITHUB_OWNER,
+ * GITHUB_REPO, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY) are fetched from
+ * Doppler at cold-start and cached for the lifetime of the function instance.
  *
  * Deploy with:
+ *   supabase secrets set DOPPLER_TOKEN=<service-token>
  *   supabase functions deploy slack-interaction
  *
  * Then set the Slack app's Interactivity Request URL to:
@@ -23,18 +23,48 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const SLACK_SIGNING_SECRET = Deno.env.get('SLACK_SIGNING_SECRET') ?? '';
-const GITHUB_TOKEN = Deno.env.get('GITHUB_TOKEN') ?? '';
-const GITHUB_OWNER = Deno.env.get('GITHUB_OWNER') ?? '';
-const GITHUB_REPO = Deno.env.get('GITHUB_REPO') ?? '';
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+// ---------------------------------------------------------------------------
+// Doppler — load all secrets once per cold start
+// ---------------------------------------------------------------------------
+
+interface DopplerSecret {
+  computed: string;
+}
+
+let cachedSecrets: Record<string, string> | null = null;
+
+async function loadSecrets(): Promise<Record<string, string>> {
+  if (cachedSecrets) return cachedSecrets;
+
+  const token = Deno.env.get('DOPPLER_TOKEN') ?? '';
+  if (!token) throw new Error('DOPPLER_TOKEN env var is not set');
+
+  const res = await fetch(
+    'https://api.doppler.com/v3/configs/config/secrets/download?format=json',
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Doppler secrets fetch failed (${res.status}): ${body}`);
+  }
+
+  const raw: Record<string, DopplerSecret> = await res.json();
+  cachedSecrets = Object.fromEntries(
+    Object.entries(raw).map(([k, v]) => [k, v.computed]),
+  );
+  return cachedSecrets;
+}
 
 // ---------------------------------------------------------------------------
 // Slack signature verification (HMAC-SHA256)
 // ---------------------------------------------------------------------------
 
-async function verifySlackSignature(request: Request, rawBody: string): Promise<boolean> {
+async function verifySlackSignature(
+  request: Request,
+  rawBody: string,
+  signingSecret: string,
+): Promise<boolean> {
   const timestamp = request.headers.get('X-Slack-Request-Timestamp') ?? '';
   const signature = request.headers.get('X-Slack-Signature') ?? '';
 
@@ -47,7 +77,7 @@ async function verifySlackSignature(request: Request, rawBody: string): Promise<
   const sigBaseString = `v0:${timestamp}:${rawBody}`;
   const key = await crypto.subtle.importKey(
     'raw',
-    new TextEncoder().encode(SLACK_SIGNING_SECRET),
+    new TextEncoder().encode(signingSecret),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign'],
@@ -72,12 +102,17 @@ async function verifySlackSignature(request: Request, rawBody: string): Promise<
 // Actions
 // ---------------------------------------------------------------------------
 
-async function triggerPublishWorkflow(draftId: string): Promise<void> {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/publish-approved.yml/dispatches`;
+async function triggerPublishWorkflow(
+  draftId: string,
+  githubToken: string,
+  githubOwner: string,
+  githubRepo: string,
+): Promise<void> {
+  const url = `https://api.github.com/repos/${githubOwner}/${githubRepo}/actions/workflows/publish-approved.yml/dispatches`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
+      Authorization: `Bearer ${githubToken}`,
       'Content-Type': 'application/json',
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
@@ -91,8 +126,12 @@ async function triggerPublishWorkflow(draftId: string): Promise<void> {
   }
 }
 
-async function rejectDraft(draftId: string): Promise<void> {
-  const client = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+async function rejectDraft(
+  draftId: string,
+  supabaseUrl: string,
+  supabaseServiceRoleKey: string,
+): Promise<void> {
+  const client = createClient(supabaseUrl, supabaseServiceRoleKey);
   const { error } = await client
     .from('draft_posts')
     .update({ status: 'rejected', updated_at: new Date().toISOString() })
@@ -117,9 +156,25 @@ Deno.serve(async (req: Request) => {
     return new Response('Method not allowed', { status: 405 });
   }
 
+  let secrets: Record<string, string>;
+  try {
+    secrets = await loadSecrets();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[slack-interaction] Failed to load secrets from Doppler:', message);
+    return new Response('Service unavailable', { status: 503 });
+  }
+
+  const SLACK_SIGNING_SECRET = secrets.SLACK_SIGNING_SECRET ?? '';
+  const GITHUB_TOKEN = secrets.GITHUB_TOKEN ?? '';
+  const GITHUB_OWNER = secrets.GITHUB_OWNER ?? '';
+  const GITHUB_REPO = secrets.GITHUB_REPO ?? '';
+  const SUPABASE_URL = secrets.SUPABASE_URL ?? '';
+  const SUPABASE_SERVICE_ROLE_KEY = secrets.SUPABASE_SERVICE_ROLE_KEY ?? '';
+
   const rawBody = await req.text();
 
-  const valid = await verifySlackSignature(req, rawBody);
+  const valid = await verifySlackSignature(req, rawBody, SLACK_SIGNING_SECRET);
   if (!valid) {
     console.error('[slack-interaction] Invalid Slack signature');
     return new Response('Unauthorized', { status: 401 });
@@ -150,7 +205,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (action_id === 'approve_post') {
-      await triggerPublishWorkflow(draftId);
+      await triggerPublishWorkflow(draftId, GITHUB_TOKEN, GITHUB_OWNER, GITHUB_REPO);
       if (responseUrl) {
         await respondToSlack(
           responseUrl,
@@ -158,7 +213,7 @@ Deno.serve(async (req: Request) => {
         );
       }
     } else if (action_id === 'reject_post') {
-      await rejectDraft(draftId);
+      await rejectDraft(draftId, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
       if (responseUrl) {
         await respondToSlack(
           responseUrl,
