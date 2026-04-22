@@ -25,6 +25,21 @@ interface FetchedUrlRow {
  * Throws if all seeds are exhausted.
  */
 export async function getNextSourceUrl(): Promise<string> {
+  const candidates = await getUnfetchedSourceUrls();
+  if (candidates.length === 0) {
+    const seeds = loadSeeds();
+    throw new Error(
+      `All ${seeds.length} seed URLs have already been fetched. ` +
+      'Add new article URLs to config/article-seeds.json to continue autonomous operation.'
+    );
+  }
+  return candidates[0];
+}
+
+/**
+ * Returns all seed URLs that have not yet been fetched, preserving seed order.
+ */
+export async function getUnfetchedSourceUrls(): Promise<string[]> {
   const seeds = loadSeeds();
   const pool = getPool();
 
@@ -32,15 +47,5 @@ export async function getNextSourceUrl(): Promise<string> {
     'SELECT source_url FROM story_candidates'
   );
   const fetchedUrls = new Set(result.rows.map((r) => r.source_url));
-
-  for (const seed of seeds) {
-    if (!fetchedUrls.has(seed.url)) {
-      return seed.url;
-    }
-  }
-
-  throw new Error(
-    `All ${seeds.length} seed URLs have already been fetched. ` +
-    'Add new article URLs to config/article-seeds.json to continue autonomous operation.'
-  );
+  return seeds.filter((seed) => !fetchedUrls.has(seed.url)).map((seed) => seed.url);
 }

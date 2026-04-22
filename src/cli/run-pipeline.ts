@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { initSecrets } from '../services/secrets';
-import { getNextSourceUrl } from '../core/sourceRotator';
+import { getUnfetchedSourceUrls } from '../core/sourceRotator';
 import { fetchStory } from '../core/research';
 import { generatePost } from '../core/contentGeneration';
 import { publishDraftPost, scheduleEngagementSnapshot } from '../core/publisher';
@@ -17,6 +17,29 @@ interface PublishedCountRow {
 
 interface DraftStatusRow {
   id: number;
+}
+
+async function fetchStoryWithFallback(maxAttempts = 5): Promise<{ sourceUrl: string; story: Awaited<ReturnType<typeof fetchStory>> }> {
+  const candidates = await getUnfetchedSourceUrls();
+  if (candidates.length === 0) {
+    throw new Error('No unfetched source URLs remain in config/article-seeds.json');
+  }
+
+  const errors: string[] = [];
+  const attemptUrls = candidates.slice(0, maxAttempts);
+
+  for (const url of attemptUrls) {
+    try {
+      const story = await fetchStory(url);
+      return { sourceUrl: url, story };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      errors.push(`${url} -> ${message}`);
+      console.warn(`[run-pipeline] Source fetch failed, trying next URL: ${url} (${message})`);
+    }
+  }
+
+  throw new Error(`Failed to fetch any source from ${attemptUrls.length} candidate URL(s): ${errors.join(' | ')}`);
 }
 
 async function getPublishedCount(): Promise<number> {
@@ -42,11 +65,12 @@ async function main(): Promise<void> {
   let sourceUrl = '';
 
   try {
-    sourceUrl = await getNextSourceUrl();
+    const sourceSelection = await fetchStoryWithFallback();
+    sourceUrl = sourceSelection.sourceUrl;
 
     await notifySlack({ event: 'run_start', date, sourceUrl });
 
-    const story = await fetchStory(sourceUrl);
+    const story = sourceSelection.story;
     const draft = await generatePost(story);
 
     const publishedCount = await getPublishedCount();
