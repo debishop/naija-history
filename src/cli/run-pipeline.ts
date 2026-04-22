@@ -19,14 +19,15 @@ interface DraftStatusRow {
   id: number;
 }
 
-async function fetchStoryWithFallback(maxAttempts = 5): Promise<{ sourceUrl: string; story: Awaited<ReturnType<typeof fetchStory>> }> {
+async function fetchStoryWithFallback(maxAttempts?: number): Promise<{ sourceUrl: string; story: Awaited<ReturnType<typeof fetchStory>> }> {
   const candidates = await getUnfetchedSourceUrls();
   if (candidates.length === 0) {
     throw new Error('No unfetched source URLs remain in config/article-seeds.json');
   }
 
   const errors: string[] = [];
-  const attemptUrls = candidates.slice(0, maxAttempts);
+  const limit = maxAttempts === undefined ? candidates.length : Math.min(maxAttempts, candidates.length);
+  const attemptUrls = candidates.slice(0, limit);
 
   for (const url of attemptUrls) {
     try {
