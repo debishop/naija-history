@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import { initSecrets } from '../services/secrets';
 import { getNextSourceUrl } from '../core/sourceRotator';
 import { fetchStory } from '../core/research';
 import { generatePost } from '../core/contentGeneration';
@@ -35,6 +36,8 @@ async function setDraftStatus(draftId: string, status: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  initSecrets();
+
   const date = new Date().toISOString().slice(0, 10);
   let sourceUrl = '';
 

@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import { initSecrets } from '../services/secrets';
 import { snapshotEngagement } from '../core/analytics';
 import { notifySlack } from '../services/notifications';
 import { getPool } from '../db/pool';
@@ -55,6 +56,8 @@ function checkTokenAge(): void {
 }
 
 async function main(): Promise<void> {
+  initSecrets();
+
   const records = await getOverdueRecords();
   console.log(`[check-snapshots] Found ${records.length} overdue snapshot(s).`);
 

@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import { initSecrets } from '../services/secrets';
 import { publishDraftPost, scheduleEngagementSnapshot } from '../core/publisher';
 import { notifySlack } from '../services/notifications';
 import { getPool } from '../db/pool';
@@ -32,6 +33,8 @@ async function setDraftApproved(draftId: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  initSecrets();
+
   const draftId = process.env['DRAFT_ID'];
   if (!draftId) {
     console.error('DRAFT_ID environment variable is required.');
