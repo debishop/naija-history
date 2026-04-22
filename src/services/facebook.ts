@@ -2,7 +2,6 @@ import { getSecrets, SECRET_KEYS } from './secrets';
 import type { DraftPost } from '../core/contentGeneration';
 
 const GRAPH_API_VERSION = 'v19.0';
-const PAGE_ID = '61577657207009';
 const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
 
 export interface GraphApiError {
@@ -35,11 +34,12 @@ function buildPostMessage(draft: DraftPost): string {
  */
 export async function publishPost(draft: DraftPost): Promise<string> {
   const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
   const pageAccessToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
 
   const message = buildPostMessage(draft);
 
-  const url = `${GRAPH_API_BASE}/${PAGE_ID}/feed`;
+  const url = `${GRAPH_API_BASE}/${pageId}/feed`;
   const body = new URLSearchParams({
     message,
     access_token: pageAccessToken,

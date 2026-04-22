@@ -50,6 +50,7 @@ export function getSecrets(): SecretsClient {
 /** Required secret keys — add new secrets here as modules are built. */
 export const SECRET_KEYS = {
   FACEBOOK_APP_SECRET: 'FACEBOOK_APP_SECRET',
+  FACEBOOK_PAGE_ID: 'FACEBOOK_PAGE_ID',
   FACEBOOK_PAGE_ACCESS_TOKEN: 'FACEBOOK_PAGE_ACCESS_TOKEN',
   DATABASE_URL: 'DATABASE_URL',
   ANTHROPIC_API_KEY: 'ANTHROPIC_API_KEY',

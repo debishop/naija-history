@@ -27,9 +27,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // Doppler — load all secrets once per cold start
 // ---------------------------------------------------------------------------
 
-interface DopplerSecret {
-  computed: string;
-}
+type DopplerSecret = string | { computed?: string; value?: string };
 
 let cachedSecrets: Record<string, string> | null = null;
 
@@ -51,7 +49,10 @@ async function loadSecrets(): Promise<Record<string, string>> {
 
   const raw: Record<string, DopplerSecret> = await res.json();
   cachedSecrets = Object.fromEntries(
-    Object.entries(raw).map(([k, v]) => [k, v.computed]),
+    Object.entries(raw).map(([k, v]) => {
+      if (typeof v === 'string') return [k, v];
+      return [k, v.computed ?? v.value ?? ''];
+    }),
   );
   return cachedSecrets;
 }
