@@ -16,14 +16,19 @@ export interface SecretsClient {
 class EnvSecretsClient implements SecretsClient {
   get(key: string): string {
     const value = process.env[key];
-    if (value === undefined || value === '') {
+    const aliasValue =
+      key === SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN
+        ? process.env.FACEBOOK_PAGE_TOKEN
+        : undefined;
+    const resolved = value ?? aliasValue;
+    if (resolved === undefined || resolved === '') {
       throw new Error(
         `Required secret "${key}" is not set. ` +
           'Ensure it is configured in your secrets manager and the corresponding ' +
           'env var is populated before starting the application.'
       );
     }
-    return value;
+    return resolved;
   }
 }
 
