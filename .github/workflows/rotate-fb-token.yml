@@ -15,6 +15,7 @@ jobs:
 
       - name: Update Facebook Page Token in Doppler
         run: |
-          echo "${{ inputs.new_token }}" | doppler secrets set FACEBOOK_PAGE_TOKEN --plain
+          doppler secrets set "FACEBOOK_PAGE_TOKEN=$NEW_TOKEN" --no-interactive
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+          NEW_TOKEN: ${{ inputs.new_token }}
