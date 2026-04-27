@@ -1,0 +1,20 @@
+name: Rotate Facebook Token
+on:
+  workflow_dispatch:
+    inputs:
+      new_token:
+        description: "New Facebook Page Token"
+        required: true
+        type: string
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dopplerhq/cli-action@v3
+
+      - name: Update Facebook Page Token in Doppler
+        run: |
+          echo "${{ inputs.new_token }}" | doppler secrets set FACEBOOK_PAGE_TOKEN --plain
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
