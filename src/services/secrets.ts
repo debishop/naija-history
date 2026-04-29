@@ -18,7 +18,7 @@ class EnvSecretsClient implements SecretsClient {
     const value = process.env[key];
     const aliasValue =
       key === SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN
-        ? process.env.FACEBOOK_PAGE_TOKEN
+        ? (process.env.FACEBOOK_PAGE_TOKEN ?? process.env.FACEBOOK_SYSTEM_USER_TOKEN)
         : undefined;
     const resolved = value ?? aliasValue;
     if (resolved === undefined || resolved === '') {
