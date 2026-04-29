@@ -105,6 +105,12 @@ CREATE TABLE IF NOT EXISTS engagement_records (
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- v3: priority column for Board-requested immediate posts
+DO $$ BEGIN
+  ALTER TABLE draft_posts ADD COLUMN IF NOT EXISTS priority TEXT NOT NULL DEFAULT 'normal'
+    CHECK (priority IN ('normal', 'critical'));
+EXCEPTION WHEN duplicate_column THEN NULL; END $$;
+
 -- Indexes for common query patterns
 CREATE INDEX IF NOT EXISTS idx_story_candidates_status ON story_candidates(status);
 CREATE INDEX IF NOT EXISTS idx_draft_posts_status      ON draft_posts(status);

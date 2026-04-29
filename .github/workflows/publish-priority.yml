@@ -1,0 +1,33 @@
+name: Priority Publish (Board Request)
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_id:
+        description: "Draft post ID to immediately publish (Board priority)"
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Priority publish draft
+        run: doppler run -- npm run cli:publish-post -- --id "$DRAFT_ID" --priority critical
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+          DRAFT_ID: ${{ inputs.draft_id }}

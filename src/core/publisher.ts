@@ -154,7 +154,18 @@ export async function scheduleEngagementSnapshot(postRecordId: string): Promise<
  * On failure: writes PostRecord{status='failed', errorMessage} — never silently discards errors.
  * Retries transient errors (5xx, rate limit) with exponential backoff.
  */
-export async function publishDraftPost(draftPostId: string): Promise<PostRecord> {
+async function autoApprove(draftPostId: string): Promise<void> {
+  const pool = getPool();
+  await pool.query(
+    `UPDATE draft_posts SET status = 'approved', updated_at = NOW() WHERE id = $1`,
+    [Number(draftPostId)]
+  );
+}
+
+export async function publishDraftPost(draftPostId: string, opts?: { skipApprovalCheck?: boolean }): Promise<PostRecord> {
+  if (opts?.skipApprovalCheck) {
+    await autoApprove(draftPostId);
+  }
   const draft = await loadDraftPost(draftPostId);
 
   try {
