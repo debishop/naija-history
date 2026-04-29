@@ -7,17 +7,20 @@ export class FacebookTokenManager {
   #accessToken;
   #appId;
   #appSecret;
+  #tokenCreatedAt;
 
-  constructor({ accessToken, appId, appSecret }) {
+  constructor({ accessToken, appId, appSecret, tokenCreatedAt }) {
     if (!accessToken) throw new Error("accessToken is required");
     this.#accessToken = accessToken;
     this.#appId = appId || process.env.FACEBOOK_APP_ID || process.env.FB_APP_ID;
     this.#appSecret = appSecret || process.env.FACEBOOK_APP_SECRET || process.env.FB_APP_SECRET;
+    this.#tokenCreatedAt = tokenCreatedAt ? new Date(tokenCreatedAt) : null;
   }
 
   static fromEnv() {
     return new FacebookTokenManager({
-      accessToken: process.env.FACEBOOK_SYSTEM_USER_TOKEN || process.env.FB_SYSTEM_USER_TOKEN,
+      accessToken: process.env.FACEBOOK_SYSTEM_USER_TOKEN,
+      tokenCreatedAt: process.env.FACEBOOK_SYSTEM_USER_TOKEN_CREATED_AT,
     });
   }
 
@@ -53,7 +56,17 @@ export class FacebookTokenManager {
       }
     }
 
-    return { ...result, status: "healthy", message: result.neverExpires ? "Token is valid and never expires." : `Token is valid. Expires ${result.expiresAt.toISOString()}.` };
+    const tokenAge = this.#tokenCreatedAt
+      ? Math.floor((Date.now() - this.#tokenCreatedAt.getTime()) / (1000 * 60 * 60 * 24))
+      : null;
+
+    const base = { ...result, tokenCreatedAt: this.#tokenCreatedAt, tokenAgeDays: tokenAge };
+
+    if (result.neverExpires) {
+      const ageNote = tokenAge !== null ? ` Token age: ${tokenAge} day(s).` : "";
+      return { ...base, status: "healthy", message: `Token is valid and never expires.${ageNote}` };
+    }
+    return { ...base, status: "healthy", message: `Token is valid. Expires ${result.expiresAt.toISOString()}.` };
   }
 
   async getTokenDebugInfo() {

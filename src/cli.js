@@ -57,6 +57,8 @@ async function main() {
       console.log(`Status: ${health.status}`);
       console.log(`Message: ${health.message}`);
       if (health.scopes) console.log(`Scopes: ${health.scopes.join(", ")}`);
+      if (health.tokenCreatedAt) console.log(`Created: ${health.tokenCreatedAt.toISOString()}`);
+      if (health.tokenAgeDays !== null) console.log(`Token age: ${health.tokenAgeDays} day(s)`);
       if (health.status !== "healthy") process.exit(1);
       break;
     }

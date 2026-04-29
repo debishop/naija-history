@@ -45,7 +45,7 @@ export class FacebookPublisher {
   static fromEnv() {
     return new FacebookPublisher({
       pageId: process.env.FACEBOOK_PAGE_ID || process.env.FB_PAGE_ID,
-      accessToken: process.env.FACEBOOK_SYSTEM_USER_TOKEN || process.env.FB_SYSTEM_USER_TOKEN,
+      accessToken: process.env.FACEBOOK_SYSTEM_USER_TOKEN,
     });
   }
 

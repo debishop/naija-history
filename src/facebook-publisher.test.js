@@ -10,11 +10,11 @@ describe("FacebookPublisher", () => {
 
   it("fromEnv reads from environment", () => {
     process.env.FB_PAGE_ID = "test-page";
-    process.env.FB_SYSTEM_USER_TOKEN = "test-token";
+    process.env.FACEBOOK_SYSTEM_USER_TOKEN = "test-token";
     const pub = FacebookPublisher.fromEnv();
     assert.ok(pub);
     delete process.env.FB_PAGE_ID;
-    delete process.env.FB_SYSTEM_USER_TOKEN;
+    delete process.env.FACEBOOK_SYSTEM_USER_TOKEN;
   });
 
   it("rejects empty message for text posts", async () => {
