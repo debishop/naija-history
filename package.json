@@ -1,0 +1,15 @@
+{
+  "name": "facebook-publisher",
+  "version": "1.0.0",
+  "description": "Facebook Graph API publishing integration for The Lens - Nigeria History",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test src/*.test.js",
+    "publish-text": "node src/cli.js text",
+    "publish-photo": "node src/cli.js photo"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
