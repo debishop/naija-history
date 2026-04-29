@@ -15,12 +15,14 @@ export interface SecretsClient {
 
 class EnvSecretsClient implements SecretsClient {
   get(key: string): string {
-    const value = process.env[key];
-    const aliasValue =
+    // For the page access token, prefer the permanent System User token from Business Manager
+    // over the legacy page access token (which expires and requires manual rotation).
+    const resolved =
       key === SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN
-        ? (process.env.FACEBOOK_PAGE_TOKEN ?? process.env.FACEBOOK_SYSTEM_USER_TOKEN)
-        : undefined;
-    const resolved = value ?? aliasValue;
+        ? (process.env.FACEBOOK_SYSTEM_USER_TOKEN ??
+           process.env.FACEBOOK_PAGE_ACCESS_TOKEN ??
+           process.env.FACEBOOK_PAGE_TOKEN)
+        : process.env[key];
     if (resolved === undefined || resolved === '') {
       throw new Error(
         `Required secret "${key}" is not set. ` +
