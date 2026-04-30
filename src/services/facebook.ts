@@ -28,6 +28,22 @@ function buildPostMessage(draft: DraftPost): string {
 }
 
 /**
+ * When a System User token is used, it must be exchanged for the page-specific
+ * access token before posting. The /{page-id}/feed endpoint requires a Page
+ * Access Token, not a User/System User token.
+ */
+async function resolvePageAccessToken(pageId: string, token: string): Promise<string> {
+  const url = `${GRAPH_API_BASE}/${pageId}?fields=access_token&access_token=${encodeURIComponent(token)}`;
+  const response = await fetch(url);
+  const json = (await response.json()) as { access_token?: string; error?: GraphApiError };
+  if (!response.ok || json.error) {
+    // Token is already a Page Access Token — use it directly
+    return token;
+  }
+  return json.access_token ?? token;
+}
+
+/**
  * Publishes a DraftPost to the configured Facebook Page.
  * Returns the Facebook post ID on success.
  * Throws FacebookPublishError on API failure.
@@ -35,7 +51,10 @@ function buildPostMessage(draft: DraftPost): string {
 export async function publishPost(draft: DraftPost): Promise<string> {
   const secrets = getSecrets();
   const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
-  const pageAccessToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+
+  // Exchange for a Page Access Token if a System User token was provided
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
 
   const message = buildPostMessage(draft);
 
