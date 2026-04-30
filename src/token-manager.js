@@ -40,7 +40,28 @@ export class FacebookTokenManager {
       return { ...result, status: "invalid", message: "Token is no longer valid. Regenerate it." };
     }
 
-    const requiredScopes = ["pages_manage_posts", "pages_read_engagement"];
+    const requiredScopes = [
+      "ads_management",
+      "ads_read",
+      "attribution_read",
+      "business_management",
+      "catalog_management",
+      "leads_retrieval",
+      "page_events",
+      "pages_manage_ads",
+      "pages_manage_cta",
+      "pages_manage_engagement",
+      "pages_manage_instant_articles",
+      "pages_manage_metadata",
+      "pages_manage_posts",
+      "pages_messaging",
+      "pages_read_engagement",
+      "pages_read_user_content",
+      "pages_show_list",
+      "publish_video",
+      "read_insights",
+      "read_page_mailboxes",
+    ];
     const missingScopes = requiredScopes.filter((s) => !result.scopes.includes(s));
     if (missingScopes.length > 0) {
       return { ...result, status: "missing_scopes", message: `Missing required scopes: ${missingScopes.join(", ")}` };

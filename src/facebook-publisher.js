@@ -140,7 +140,7 @@ export class FacebookPublisher {
       return `Token expired or invalid: ${err.message}. Check the System User token in Business Manager.`;
     }
     if (err.code === 200 || err.code === 10) {
-      return `Permission error (code ${err.code}): ${err.message}. Ensure pages_manage_posts and pages_read_engagement permissions are granted.`;
+      return `Permission error (code ${err.code}): ${err.message}. Ensure all required permissions are granted (ads_management, pages_manage_posts, etc). Run token-check for details.`;
     }
     if (statusCode === 429 || err.code === 32 || err.code === 4) {
       return `Rate limit hit (code ${err.code}): ${err.message}. Wait before retrying.`;

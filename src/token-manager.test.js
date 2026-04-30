@@ -2,6 +2,29 @@ import { describe, it, mock, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { FacebookTokenManager } from "./token-manager.js";
 
+const ALL_REQUIRED_SCOPES = [
+  "ads_management",
+  "ads_read",
+  "attribution_read",
+  "business_management",
+  "catalog_management",
+  "leads_retrieval",
+  "page_events",
+  "pages_manage_ads",
+  "pages_manage_cta",
+  "pages_manage_engagement",
+  "pages_manage_instant_articles",
+  "pages_manage_metadata",
+  "pages_manage_posts",
+  "pages_messaging",
+  "pages_read_engagement",
+  "pages_read_user_content",
+  "pages_show_list",
+  "publish_video",
+  "read_insights",
+  "read_page_mailboxes",
+];
+
 describe("FacebookTokenManager", () => {
   let originalFetch;
 
@@ -38,7 +61,7 @@ describe("FacebookTokenManager", () => {
             is_valid: true,
             app_id: "test-app-id",
             type: "PAGE",
-            scopes: ["pages_manage_posts", "pages_read_engagement"],
+            scopes: ALL_REQUIRED_SCOPES,
             expires_at: 0,
           },
         }),
@@ -60,7 +83,7 @@ describe("FacebookTokenManager", () => {
             is_valid: true,
             app_id: "test-app-id",
             type: "PAGE",
-            scopes: ["pages_manage_posts", "pages_read_engagement"],
+            scopes: ALL_REQUIRED_SCOPES,
             expires_at: 0,
           },
         }),
@@ -94,13 +117,14 @@ describe("FacebookTokenManager", () => {
     });
 
     it("returns missing_scopes when required scopes absent", async () => {
+      const partialScopes = ALL_REQUIRED_SCOPES.filter((s) => s !== "ads_management" && s !== "ads_read");
       globalThis.fetch = mock.fn(async () => ({
         json: async () => ({
           data: {
             is_valid: true,
             app_id: "test-app-id",
             type: "PAGE",
-            scopes: ["pages_read_engagement"],
+            scopes: partialScopes,
             expires_at: 0,
           },
         }),
@@ -109,7 +133,8 @@ describe("FacebookTokenManager", () => {
       const mgr = new FacebookTokenManager({ accessToken: "tok" });
       const result = await mgr.checkTokenHealth();
       assert.equal(result.status, "missing_scopes");
-      assert.ok(result.message.includes("pages_manage_posts"));
+      assert.ok(result.message.includes("ads_management"));
+      assert.ok(result.message.includes("ads_read"));
     });
 
     it("returns expiring_soon when token expires within 7 days", async () => {
@@ -120,7 +145,7 @@ describe("FacebookTokenManager", () => {
             is_valid: true,
             app_id: "test-app-id",
             type: "PAGE",
-            scopes: ["pages_manage_posts", "pages_read_engagement"],
+            scopes: ALL_REQUIRED_SCOPES,
             expires_at: fiveDaysFromNow,
           },
         }),
@@ -140,7 +165,7 @@ describe("FacebookTokenManager", () => {
             is_valid: true,
             app_id: "test-app-id",
             type: "PAGE",
-            scopes: ["pages_manage_posts", "pages_read_engagement"],
+            scopes: ALL_REQUIRED_SCOPES,
             expires_at: sixtyDaysFromNow,
           },
         }),
