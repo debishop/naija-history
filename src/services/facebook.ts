@@ -91,6 +91,29 @@ export async function publishPost(draft: DraftPost): Promise<string> {
   return json.id;
 }
 
+/**
+ * Deletes a Facebook post. Uses the page access token derived from the configured System User token.
+ */
+export async function deletePost(facebookPostId: string): Promise<void> {
+  const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
+
+  const url = `${GRAPH_API_BASE}/${facebookPostId}?access_token=${encodeURIComponent(pageAccessToken)}`;
+  const response = await fetch(url, { method: 'DELETE' });
+  const json = (await response.json()) as { success?: boolean; error?: GraphApiError };
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} with no error body`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+}
+
 export interface RawEngagement {
   reactions: number;
   comments: number;

@@ -1,0 +1,38 @@
+name: Direct Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: "Theme name (e.g. 'Independence & Nation-Building')"
+        required: true
+        type: string
+      delete_post:
+        description: "Facebook post ID to delete before publishing (optional)"
+        required: false
+        type: string
+
+jobs:
+  direct-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Delete bad post and publish themed content
+        run: doppler run -- npm run cli:direct-publish
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+          THEME: ${{ inputs.theme }}
+          DELETE_POST: ${{ inputs.delete_post }}

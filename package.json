@@ -17,7 +17,8 @@
     "cli:snapshot-engagement": "ts-node src/cli/snapshot-engagement.ts",
     "cli:run-pipeline": "ts-node src/cli/run-pipeline.ts",
     "cli:approve-post": "ts-node src/cli/approve-post.ts",
-    "cli:check-snapshots": "ts-node src/cli/check-snapshots.ts"
+    "cli:check-snapshots": "ts-node src/cli/check-snapshots.ts",
+    "cli:direct-publish": "ts-node src/cli/direct-publish.ts"
   },
   "keywords": [],
   "author": "",
