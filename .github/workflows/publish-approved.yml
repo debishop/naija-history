@@ -26,6 +26,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Debug — confirm Doppler secrets present
+        run: |
+          doppler run -- bash -c '
+            echo "FACEBOOK_PAGE_ID=${FACEBOOK_PAGE_ID}"
+            echo "FACEBOOK_SYSTEM_USER_TOKEN present: $([ -n "$FACEBOOK_SYSTEM_USER_TOKEN" ] && echo yes || echo NO)"
+            echo "FACEBOOK_PAGE_ACCESS_TOKEN present: $([ -n "$FACEBOOK_PAGE_ACCESS_TOKEN" ] && echo yes || echo NO)"
+          '
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
       - name: Approve and publish draft
         run: doppler run -- npm run cli:approve-post
         env:
