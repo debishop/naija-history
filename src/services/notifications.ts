@@ -8,7 +8,9 @@ export type SlackEvent =
   | { event: 'publish_failed'; errorMessage: string; draftId: string }
   | { event: 'snapshot_recorded'; postRecordId: string; reactions: number; comments: number; shares: number; reach: number }
   | { event: 'pipeline_error'; errorMessage: string; stack?: string }
-  | { event: 'token_age_warning'; days: number };
+  | { event: 'token_age_warning'; days: number }
+  | { event: 'token_health_ok'; tokenType: string; expiresAt: string | null; scopes: string[] }
+  | { event: 'token_health_failed'; error: string; missingScopes: string[] };
 
 type SlackPayload = { text: string; blocks?: unknown[] };
 
@@ -102,6 +104,25 @@ function buildPayload(slackEvent: SlackEvent): SlackPayload {
     case 'token_age_warning':
       return {
         text: `*Facebook token age warning* :warning:\nToken is ${slackEvent.days} days old. Rotate before day 60.`,
+      };
+
+    case 'token_health_ok': {
+      const expiryLine = slackEvent.expiresAt
+        ? `\nExpires: ${slackEvent.expiresAt}`
+        : '\nExpires: never (long-lived)';
+      return {
+        text: `*Facebook token health check passed* :white_check_mark:\nType: ${slackEvent.tokenType}${expiryLine}\nScopes: ${slackEvent.scopes.join(', ') || 'unknown'}`,
+      };
+    }
+
+    case 'token_health_failed':
+      return {
+        text: (
+          `*Facebook token health check FAILED* :rotating_light:\nError: ${slackEvent.error}` +
+          (slackEvent.missingScopes.length > 0
+            ? `\nMissing scopes: ${slackEvent.missingScopes.join(', ')}`
+            : '')
+        ),
       };
   }
 }
