@@ -18,7 +18,8 @@
     "cli:run-pipeline": "ts-node src/cli/run-pipeline.ts",
     "cli:approve-post": "ts-node src/cli/approve-post.ts",
     "cli:check-snapshots": "ts-node src/cli/check-snapshots.ts",
-    "cli:direct-publish": "ts-node src/cli/direct-publish.ts"
+    "cli:direct-publish": "ts-node src/cli/direct-publish.ts",
+    "cli:check-token-health": "ts-node src/cli/check-token-health.ts"
   },
   "keywords": [],
   "author": "",

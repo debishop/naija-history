@@ -4,6 +4,104 @@ import type { DraftPost } from '../core/contentGeneration';
 const GRAPH_API_VERSION = 'v19.0';
 const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
 
+export interface TokenHealthResult {
+  valid: boolean;
+  tokenType: string | null;
+  expiresAt: Date | null;
+  scopes: string[];
+  missingScopes: string[];
+  error: string | null;
+}
+
+const REQUIRED_SCOPES = [
+  'pages_manage_posts',
+  'pages_read_engagement',
+  'pages_show_list',
+];
+
+interface DebugTokenData {
+  app_id?: string;
+  type?: string;
+  is_valid?: boolean;
+  expires_at?: number;
+  scopes?: string[];
+  error?: { message: string; code: number };
+}
+
+export async function checkTokenHealth(): Promise<TokenHealthResult> {
+  const secrets = getSecrets();
+  const token = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const appSecret = process.env['FACEBOOK_APP_SECRET'] ?? '';
+
+  const appId = process.env['FACEBOOK_APP_ID'] ?? '';
+  const inputTokenParam = encodeURIComponent(token);
+
+  let debugData: DebugTokenData | null = null;
+
+  if (appId && appSecret) {
+    const accessToken = `${appId}|${appSecret}`;
+    const url = `${GRAPH_API_BASE}/debug_token?input_token=${inputTokenParam}&access_token=${encodeURIComponent(accessToken)}`;
+    const response = await fetch(url);
+    const json = (await response.json()) as { data?: DebugTokenData; error?: GraphApiError };
+
+    if (json.data) {
+      debugData = json.data;
+    }
+  }
+
+  if (!debugData) {
+    const url = `${GRAPH_API_BASE}/me?access_token=${inputTokenParam}`;
+    const response = await fetch(url);
+    const json = (await response.json()) as { id?: string; name?: string; error?: GraphApiError };
+
+    if (!response.ok || json.error) {
+      return {
+        valid: false,
+        tokenType: null,
+        expiresAt: null,
+        scopes: [],
+        missingScopes: REQUIRED_SCOPES,
+        error: json.error?.message ?? `HTTP ${response.status}`,
+      };
+    }
+
+    return {
+      valid: true,
+      tokenType: 'unknown',
+      expiresAt: null,
+      scopes: [],
+      missingScopes: [],
+      error: null,
+    };
+  }
+
+  if (!debugData.is_valid) {
+    return {
+      valid: false,
+      tokenType: debugData.type ?? null,
+      expiresAt: null,
+      scopes: debugData.scopes ?? [],
+      missingScopes: REQUIRED_SCOPES,
+      error: debugData.error?.message ?? 'Token is invalid',
+    };
+  }
+
+  const scopes = debugData.scopes ?? [];
+  const missingScopes = REQUIRED_SCOPES.filter((s) => !scopes.includes(s));
+  const expiresAt = debugData.expires_at && debugData.expires_at > 0
+    ? new Date(debugData.expires_at * 1000)
+    : null;
+
+  return {
+    valid: true,
+    tokenType: debugData.type ?? null,
+    expiresAt,
+    scopes,
+    missingScopes,
+    error: missingScopes.length > 0 ? `Missing required scopes: ${missingScopes.join(', ')}` : null,
+  };
+}
+
 export interface GraphApiError {
   message: string;
   type: string;
@@ -112,6 +210,95 @@ export async function deletePost(facebookPostId: string): Promise<void> {
     };
     throw new FacebookPublishError(graphError, response.status);
   }
+}
+
+/**
+ * Uploads a photo to the Facebook page (unpublished) and returns the photo ID.
+ */
+export async function uploadPagePhoto(imageUrl: string, caption: string): Promise<string> {
+  const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
+
+  const url = `${GRAPH_API_BASE}/${pageId}/photos`;
+  const body = new URLSearchParams({
+    url: imageUrl,
+    caption,
+    published: 'false',
+    access_token: pageAccessToken,
+  });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  });
+
+  const json = (await response.json()) as { id?: string; error?: GraphApiError };
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} uploading photo`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+
+  if (!json.id) {
+    throw new FacebookPublishError(
+      { message: 'No photo ID returned from Graph API', type: 'UnexpectedResponse', code: 0 },
+      response.status
+    );
+  }
+
+  return json.id;
+}
+
+/**
+ * Publishes a post with an attached photo. The photo must already be uploaded (unpublished).
+ */
+export async function publishPostWithPhoto(draft: DraftPost, photoId: string): Promise<string> {
+  const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
+
+  const message = buildPostMessage(draft);
+
+  const url = `${GRAPH_API_BASE}/${pageId}/feed`;
+  const body = new URLSearchParams({
+    message,
+    access_token: pageAccessToken,
+    'attached_media[0]': `{"media_fbid":"${photoId}"}`,
+  });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  });
+
+  const json = (await response.json()) as { id?: string; error?: GraphApiError };
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} with no error body`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+
+  if (!json.id) {
+    throw new FacebookPublishError(
+      { message: 'No post ID returned from Graph API', type: 'UnexpectedResponse', code: 0 },
+      response.status
+    );
+  }
+
+  return json.id;
 }
 
 export interface RawEngagement {

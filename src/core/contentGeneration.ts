@@ -51,19 +51,25 @@ Story details:
 
 The post MUST follow this exact format:
 
-[Hook — one punchy sentence that grabs attention]
+[Hook - one punchy sentence that grabs attention]
 
-[Narrative body — 2–4 paragraphs, factual, engaging, based only on the source text]
+[Narrative body - at least 5 paragraphs, factual, engaging, based only on the source text. MINIMUM 600 words total]
 
-[Call to action — invite readers to learn more, share, or reflect]
+[Engagement question - end with a direct question to the reader e.g. 'What aspect of this history resonates most with you? Share below!']
+
+[YouTube video link - find and include a relevant YouTube documentary URL: 'Watch more: https://www.youtube.com/watch?v=...']
 
 📚 Source: ${candidate.sourceName} — ${candidate.sourceUrl}
-#NigerianHistory #Africa [3–5 relevant topic hashtags based on the content, without the # on the final list]
+#NigerianHistory #Africa [Add 13+ more relevant hashtags here - minimum 15 hashtags total]
 
 IMPORTANT:
-- Use only facts from the provided content
+- Include only verified historical facts with specific dates
+- NEVER use dash characters: no em dashes, en dashes, or hyphens used as dashes anywhere
+- The post body MUST be at least 600 words - expand paragraphs if needed
+- The post MUST end with a question to drive reader engagement
+- MUST include a real YouTube documentary/educational video URL about the topic
+- MUST include at least 15 hashtags total including NigerianHistory and Africa
 - Include the source citation line exactly as shown above
-- Generate 3–5 relevant hashtags (in addition to #NigerianHistory and #Africa) based on the story topic
 - Return only the post text, nothing else
 `.trim();
 
@@ -89,7 +95,7 @@ export async function generatePost(candidate: StoryCandidate): Promise<DraftPost
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 1024,
+    max_tokens: 2500,
     messages: [
       {
         role: 'user',
