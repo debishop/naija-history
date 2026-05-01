@@ -139,8 +139,13 @@ async function main(): Promise<void> {
 
   if (deletePostId) {
     console.log(`Deleting bad post: ${deletePostId}`);
-    await deletePost(deletePostId);
-    console.log('Deleted.');
+    try {
+      await deletePost(deletePostId);
+      console.log('Deleted.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`Warning: could not delete post (${msg}). Continuing with publish.`);
+    }
   }
 
   console.log('Generating post from Claude knowledge...');
