@@ -212,6 +212,95 @@ export async function deletePost(facebookPostId: string): Promise<void> {
   }
 }
 
+/**
+ * Uploads a photo to the Facebook page (unpublished) and returns the photo ID.
+ */
+export async function uploadPagePhoto(imageUrl: string, caption: string): Promise<string> {
+  const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
+
+  const url = `${GRAPH_API_BASE}/${pageId}/photos`;
+  const body = new URLSearchParams({
+    url: imageUrl,
+    caption,
+    published: 'false',
+    access_token: pageAccessToken,
+  });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  });
+
+  const json = (await response.json()) as { id?: string; error?: GraphApiError };
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} uploading photo`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+
+  if (!json.id) {
+    throw new FacebookPublishError(
+      { message: 'No photo ID returned from Graph API', type: 'UnexpectedResponse', code: 0 },
+      response.status
+    );
+  }
+
+  return json.id;
+}
+
+/**
+ * Publishes a post with an attached photo. The photo must already be uploaded (unpublished).
+ */
+export async function publishPostWithPhoto(draft: DraftPost, photoId: string): Promise<string> {
+  const secrets = getSecrets();
+  const pageId = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ID);
+  const userOrPageToken = secrets.get(SECRET_KEYS.FACEBOOK_PAGE_ACCESS_TOKEN);
+  const pageAccessToken = await resolvePageAccessToken(pageId, userOrPageToken);
+
+  const message = buildPostMessage(draft);
+
+  const url = `${GRAPH_API_BASE}/${pageId}/feed`;
+  const body = new URLSearchParams({
+    message,
+    access_token: pageAccessToken,
+    'attached_media[0]': `{"media_fbid":"${photoId}"}`,
+  });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  });
+
+  const json = (await response.json()) as { id?: string; error?: GraphApiError };
+
+  if (!response.ok || json.error) {
+    const graphError: GraphApiError = json.error ?? {
+      message: `HTTP ${response.status} with no error body`,
+      type: 'UnknownError',
+      code: response.status,
+    };
+    throw new FacebookPublishError(graphError, response.status);
+  }
+
+  if (!json.id) {
+    throw new FacebookPublishError(
+      { message: 'No post ID returned from Graph API', type: 'UnexpectedResponse', code: 0 },
+      response.status
+    );
+  }
+
+  return json.id;
+}
+
 export interface RawEngagement {
   reactions: number;
   comments: number;

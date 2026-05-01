@@ -3,7 +3,8 @@ dotenv.config();
 
 import Anthropic from '@anthropic-ai/sdk';
 import { initSecrets, getSecrets, SECRET_KEYS } from '../services/secrets';
-import { deletePost, publishPost } from '../services/facebook';
+import { deletePost, publishPost, uploadPagePhoto, publishPostWithPhoto } from '../services/facebook';
+import { fetchRelevantImage } from '../services/wikimedia';
 import { notifySlack } from '../services/notifications';
 import { getPool, closePool } from '../db/pool';
 
@@ -38,21 +39,27 @@ Write an engaging, educational Facebook post that teaches readers about this the
 - Be based only on well-established, verifiable historical facts
 - Be written in an engaging, accessible tone suitable for a general audience
 - Cover a specific event, figure, or development related to the theme
-- Be substantial — include 3–5 informative paragraphs with real names, dates, and context
+- Be substantial — include at least 5 informative paragraphs with real names, dates, and context. MINIMUM 600 words total.
 
 The post MUST follow this exact format:
 
-[Hook — one punchy sentence that grabs attention]
+[Hook - one punchy sentence that grabs attention]
 
-[Narrative body — 3–5 paragraphs, factual, engaging, educational]
+[Narrative body - at least 5 paragraphs, factual, engaging, educational. MINIMUM 600 words total]
 
-[Call to action — invite readers to share, comment, or reflect on this history]
+[Engagement question - end with a direct question to the reader e.g. 'What aspect of this history resonates most with you? Share below!']
 
-#NigerianHistory #Africa [3–5 relevant topic hashtags, no # on the final list]
+[YouTube video link - find and include a relevant YouTube documentary URL: 'Watch more: https://www.youtube.com/watch?v=...']
+
+#NigerianHistory #Africa [Add 13+ more relevant hashtags here - minimum 15 hashtags total]
 
 IMPORTANT:
-- Include only verified historical facts
-- Generate 3–5 relevant hashtags (in addition to #NigerianHistory and #Africa) based on the theme
+- Include only verified historical facts with specific dates
+- NEVER use dash characters: no em dashes, en dashes, or hyphens used as dashes anywhere
+- The post body MUST be at least 600 words - expand paragraphs if needed
+- The post MUST end with a question to drive reader engagement
+- MUST include a real YouTube documentary/educational video URL about the topic
+- MUST include at least 15 hashtags total including NigerianHistory and Africa
 - Return only the post text, nothing else
 `.trim();
 
@@ -62,7 +69,7 @@ async function generateDirectPost(theme: string): Promise<string> {
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 1500,
+    max_tokens: 2500,
     messages: [{ role: 'user', content: DIRECT_GENERATION_PROMPT(theme) }],
   });
 
@@ -157,7 +164,19 @@ async function main(): Promise<void> {
     status: 'approved' as const,
   };
 
-  const facebookPostId = await publishPost(draft);
+  let facebookPostId: string;
+
+  const image = await fetchRelevantImage(theme);
+  if (image) {
+    console.log(`Found Wikimedia image: ${image.title}`);
+    const photoId = await uploadPagePhoto(image.url, body.slice(0, 200));
+    console.log(`Uploaded photo ID: ${photoId}`);
+    facebookPostId = await publishPostWithPhoto(draft, photoId);
+  } else {
+    console.log('No suitable Wikimedia image found, publishing text-only.');
+    facebookPostId = await publishPost(draft);
+  }
+
   await markDraftPublished(draftId);
   await writePostRecord(draftId, facebookPostId);
 
