@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { FacebookPublisher } from "./facebook-publisher.js";
 import { FacebookTokenManager } from "./token-manager.js";
+import { ImageGenerator, CANDIDATE_COUNT } from "./image-generator.js";
+import { ApprovalWorkflow } from "./approval-workflow.js";
 
 const publisher = FacebookPublisher.fromEnv();
 
@@ -70,8 +72,60 @@ async function main() {
       break;
     }
 
+    case "generate-images": {
+      const prompt = args.join(" ");
+      if (!prompt) {
+        console.error("Usage: cli.js generate-images <prompt>");
+        process.exit(1);
+      }
+      const generator = ImageGenerator.fromEnv();
+      const images = await generator.generateCandidates(prompt);
+      console.log(`Generated ${images.length} image candidates:`);
+      images.forEach((img) => {
+        console.log(`  [${img.index + 1}] ${img.url}`);
+        console.log(`      Prompt: ${img.revisedPrompt}`);
+      });
+      break;
+    }
+
+    case "approve-images": {
+      const prompt = args.join(" ");
+      if (!prompt) {
+        console.error("Usage: cli.js approve-images <image-prompt>");
+        console.error("  Generates 5 images and submits a Paperclip approval request.");
+        console.error("  Requires: OPENAI_API_KEY, PAPERCLIP_API_URL, PAPERCLIP_API_KEY, PAPERCLIP_COMPANY_ID, PAPERCLIP_AGENT_ID");
+        process.exit(1);
+      }
+      const workflow = ApprovalWorkflow.fromEnv();
+      const result = await workflow.generateAndSubmit({
+        prompt,
+        postCaption: prompt,
+        agentId: process.env.PAPERCLIP_AGENT_ID,
+      });
+      console.log(`Approval submitted: ${result.approvalId}`);
+      console.log(`Status: ${result.status}`);
+      console.log(`Generated ${result.images.length} candidates:`);
+      result.images.forEach((img) => {
+        console.log(`  [${img.index + 1}] ${img.url}`);
+      });
+      break;
+    }
+
+    case "check-approval": {
+      const [approvalId] = args;
+      if (!approvalId) {
+        console.error("Usage: cli.js check-approval <approval-id>");
+        process.exit(1);
+      }
+      const workflow = ApprovalWorkflow.fromEnv();
+      const status = await workflow.checkApprovalStatus(approvalId);
+      console.log(`Approval ${status.id}: ${status.status}`);
+      if (status.resolvedAt) console.log(`Resolved at: ${status.resolvedAt}`);
+      break;
+    }
+
     default:
-      console.error("Commands: verify, text, photo, insights, token-check, token-debug");
+      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval");
       process.exit(1);
   }
 }
