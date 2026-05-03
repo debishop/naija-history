@@ -43,10 +43,8 @@ export class FacebookTokenManager {
     const requiredScopes = [
       "ads_management",
       "ads_read",
-      "attribution_read",
       "business_management",
       "catalog_management",
-      "leads_retrieval",
       "page_events",
       "pages_manage_ads",
       "pages_manage_cta",
