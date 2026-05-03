@@ -12,8 +12,8 @@ export class FacebookTokenManager {
   constructor({ accessToken, appId, appSecret, tokenCreatedAt }) {
     if (!accessToken) throw new Error("accessToken is required");
     this.#accessToken = accessToken;
-    this.#appId = appId || process.env.FACEBOOK_APP_ID || process.env.FB_APP_ID;
-    this.#appSecret = appSecret || process.env.FACEBOOK_APP_SECRET || process.env.FB_APP_SECRET;
+    this.#appId = appId || process.env.FACEBOOK_APP_ID;
+    this.#appSecret = appSecret || process.env.FACEBOOK_APP_SECRET;
     this.#tokenCreatedAt = tokenCreatedAt ? new Date(tokenCreatedAt) : null;
   }
 
