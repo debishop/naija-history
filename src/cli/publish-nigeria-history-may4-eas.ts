@@ -58,7 +58,7 @@ Watch more: https://www.youtube.com/watch?v=RHyS3N5BLDY
 
 📷 Kano Airport aerial view (Javy010, CC BY-SA 4.0): https://upload.wikimedia.org/wikipedia/commons/0/08/Overview_of_Kano_Airport.jpg
 
-#TodayInNigeriaHistory #NigerianHistory #EASAirlines #KanoAirDisaster #NigerianAviation #May4 #AviationSafety #Nigeria2002 #NigerianHeritage #Kano #FlightSafety #NCAA #NigerianCivilAviationAuthority #AfricanHistory #NigeriaRememembers #AviationDisaster #NeverForget #NigeriaAviation #GwammajaKano #NigerianLives`;
+#TodayInNigeriaHistory #NigerianHistory #EASAirlines #KanoAirDisaster #NigerianAviation #May4 #AviationSafety #Nigeria2002 #NigerianHeritage #Kano #FlightSafety #NCAA #NigerianCivilAviationAuthority #AfricanHistory #NigeriaRemembers #AviationDisaster #NeverForget #NigeriaAviation #GwammajaKano #NigerianLives`;
 
 const THEME = 'EAS Airlines Flight 4226 Kano Air Disaster — May 4, 2002';
 
