@@ -10,7 +10,7 @@ const POST_BODY = `🗓️ TODAY IN NIGERIA HISTORY — May 4
 
 Fire Over Kano: The EAS Airlines Disaster That Changed Nigerian Aviation Forever
 
-On the afternoon of May 4, 2002, a passenger aircraft lifted off from Mallam Aminu Kano International Airport and never made it out of the city. Within minutes, EAS Airlines Flight 4226 had ploughed through the rooftops of Gwammaja, one of Kano's most densely populated residential quarters, killing everyone on board and dozens of people on the ground. It remains one of the deadliest aviation disasters in Nigerian history, and its aftermath reshaped the country's approach to air safety in ways still felt today.
+On the afternoon of May 4, 2002, a passenger aircraft lifted off from Mallam Aminu Kano International Airport and never made it out of the city. Within minutes, EAS Airlines Flight 4226 had ploughed through the rooftops of Gwammaja, one of Kano's most densely populated residential quarters, killing 73 of the 77 people on board and dozens of people on the ground. It remains one of the deadliest aviation disasters in Nigerian history, and its aftermath reshaped the country's approach to air safety in ways still felt today.
 
 The Flight That Never Left Kano
 
@@ -48,7 +48,7 @@ Gwammaja was a neighborhood of ordinary lives on the afternoon of May 4, 2002. P
 
 The four survivors of Flight 4226 lived. More than 100 people did not.
 
-Twenty-three years later, the lessons of that afternoon are written into Nigerian aviation law. The question is whether those laws are enforced with the same urgency that their creation demanded.
+Twenty-four years later, the lessons of that afternoon are written into Nigerian aviation law. The question is whether those laws are enforced with the same urgency that their creation demanded.
 
 Over 100 lives lost in seconds on May 4, 2002. How has Nigeria's aviation sector changed since that tragedy? Share your thoughts below.
 
