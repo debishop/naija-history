@@ -112,6 +112,83 @@ export class FacebookPublisher {
     return { valid: true, pageId: data.id, pageName: data.name };
   }
 
+  async #getPageAccessToken() {
+    const url = `${GRAPH_API_BASE}/${this.#pageId}?fields=access_token&access_token=${this.#accessToken}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.error) {
+      throw new FacebookPublishError(
+        `Failed to get page access token: ${data.error.message}`,
+        { statusCode: res.status, type: data.error.type, code: data.error.code, fbTraceId: data.error.fbtrace_id }
+      );
+    }
+    return data.access_token;
+  }
+
+  async uploadProfilePicture({ imagePath, imageUrl }) {
+    if (!imagePath && !imageUrl) {
+      throw new Error("Either imagePath or imageUrl is required");
+    }
+
+    const pageToken = await this.#getPageAccessToken();
+    const url = `${GRAPH_API_BASE}/${this.#pageId}/picture`;
+
+    let res;
+    if (imageUrl) {
+      const body = new URLSearchParams({
+        picture: imageUrl,
+        access_token: pageToken,
+      });
+      res = await fetch(url, { method: "POST", body });
+    } else {
+      const fileData = await readFile(imagePath);
+      const form = new FormData();
+      form.set("source", new Blob([fileData]), basename(imagePath));
+      form.set("access_token", pageToken);
+      res = await fetch(url, { method: "POST", body: form });
+    }
+
+    return this.#handleResponse(res);
+  }
+
+  async uploadCoverPhoto({ imagePath, imageUrl }) {
+    if (!imagePath && !imageUrl) {
+      throw new Error("Either imagePath or imageUrl is required");
+    }
+
+    const pageToken = await this.#getPageAccessToken();
+    const photosUrl = `${GRAPH_API_BASE}/${this.#pageId}/photos`;
+    let photoId;
+
+    if (imageUrl) {
+      const body = new URLSearchParams({
+        url: imageUrl,
+        published: "false",
+        access_token: pageToken,
+      });
+      const photoRes = await fetch(photosUrl, { method: "POST", body });
+      const photoData = await this.#handleResponse(photoRes);
+      photoId = photoData.id;
+    } else {
+      const fileData = await readFile(imagePath);
+      const form = new FormData();
+      form.set("source", new Blob([fileData]), basename(imagePath));
+      form.set("published", "false");
+      form.set("access_token", pageToken);
+      const photoRes = await fetch(photosUrl, { method: "POST", body: form });
+      const photoData = await this.#handleResponse(photoRes);
+      photoId = photoData.id;
+    }
+
+    const coverUrl = `${GRAPH_API_BASE}/${this.#pageId}`;
+    const coverBody = new URLSearchParams({
+      cover: photoId,
+      access_token: pageToken,
+    });
+    const coverRes = await fetch(coverUrl, { method: "POST", body: coverBody });
+    return this.#handleResponse(coverRes);
+  }
+
   async getPostInsights(postId) {
     const url = `${GRAPH_API_BASE}/${postId}?fields=id,message,created_time,shares,likes.summary(true),comments.summary(true)&access_token=${this.#accessToken}`;
     const res = await fetch(url);

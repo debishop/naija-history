@@ -124,8 +124,36 @@ async function main() {
       break;
     }
 
+    case "upload-profile-picture": {
+      const [source] = args;
+      if (!source) {
+        console.error("Usage: cli.js upload-profile-picture <url-or-path>");
+        process.exit(1);
+      }
+      const isUrl = source.startsWith("http://") || source.startsWith("https://");
+      const result = await publisher.uploadProfilePicture(
+        isUrl ? { imageUrl: source } : { imagePath: source }
+      );
+      console.log("Profile picture uploaded:", result);
+      break;
+    }
+
+    case "upload-cover-photo": {
+      const [source] = args;
+      if (!source) {
+        console.error("Usage: cli.js upload-cover-photo <url-or-path>");
+        process.exit(1);
+      }
+      const isUrl = source.startsWith("http://") || source.startsWith("https://");
+      const result = await publisher.uploadCoverPhoto(
+        isUrl ? { imageUrl: source } : { imagePath: source }
+      );
+      console.log("Cover photo uploaded:", result);
+      break;
+    }
+
     default:
-      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval");
+      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval, upload-profile-picture, upload-cover-photo");
       process.exit(1);
   }
 }
