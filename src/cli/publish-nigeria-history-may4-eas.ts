@@ -24,7 +24,7 @@ The plane struck a mosque minaret. It then tore through a cluster of residential
 
 The Human Toll
 
-The numbers were staggering. Sixty-six passengers and seven crew members died on board. On the ground, the crash killed at least 78 civilians and injured more than 47 others. More than 30 homes were destroyed. The total death toll reached approximately 148 to 149 people (The New Humanitarian, May 6, 2002; CNN, May 5, 2002). Only four people survived.
+The numbers were staggering. Sixty-six passengers and seven crew members died on board. On the ground, the crash killed at least 30 civilians and injured more than 47 others. More than 30 homes were destroyed. The total death toll exceeded 100 people, with official counts placing it at approximately 103 (Aviation Safety Network; Wikipedia). Early news reports cited higher preliminary figures before final body counts were complete (The New Humanitarian, May 6, 2002; CNN, May 5, 2002). Only four people survived.
 
 Among the dead was Ishaya Mark Aku, Nigeria's Minister of Sport. Aku had been travelling to Lagos in connection with a FIFA World Cup warm-up match between Nigeria and Kenya ahead of the 2002 World Cup in Japan and South Korea. Also killed were Julie Useni and Danjuma Useni, the wife and son of Jeremiah Useni, the former Federal Capital Territory Minister. The loss of government figures alongside hundreds of ordinary citizens underscored how indiscriminate the disaster was.
 
@@ -40,13 +40,13 @@ The EAS Airlines crash did not occur in isolation. It was one disaster in a stri
 
 Together, these disasters forced a reckoning with Nigeria's aviation safety culture. The Nigerian Civil Aviation Authority (NCAA) came under sustained pressure to modernize. The result was the development and promulgation of the Nigerian Civil Aviation Regulations (NCAR), a comprehensive regulatory framework designed to bring Nigerian aviation standards in line with international norms. The EAS Airlines disaster of 2002 is widely recognized as the event that gave that reform effort its urgency and political momentum.
 
-The causes identified in the Kano crash were not mysteries: pilot error, failure to follow established procedures, aging aircraft, and an oversight environment that had allowed unsafe conditions to persist. These were correctable failures. The tragedy was that correction required approximately 148 deaths to become politically unavoidable.
+The causes identified in the Kano crash were not mysteries: pilot error, failure to follow established procedures, aging aircraft, and an oversight environment that had allowed unsafe conditions to persist. These were correctable failures. The tragedy was that correction required more than 100 deaths to become politically unavoidable.
 
 What Kano Remembered
 
-Gwammaja was a neighborhood of ordinary lives on the afternoon of May 4, 2002. People were going to work, children were in school. A mosque stood as a landmark on the approach path. By noon, the neighborhood was the center of a national tragedy, its streets full of rescuers, its sky still thick with smoke from the burning wreckage of a modern passenger aircraft that had failed its most basic task: to carry people safely from one city to another.
+Gwammaja was a neighborhood of ordinary lives on the afternoon of May 4, 2002. People were going to work, children were in school. A mosque stood as a landmark on the approach path. By that afternoon, the neighborhood was the center of a national tragedy, its streets full of rescuers, its sky still thick with smoke from the burning wreckage of a modern passenger aircraft that had failed its most basic task: to carry people safely from one city to another.
 
-The four survivors of Flight 4226 lived. Approximately 148 people did not.
+The four survivors of Flight 4226 lived. More than 100 people did not.
 
 Twenty-three years later, the lessons of that afternoon are written into Nigerian aviation law. The question is whether those laws are enforced with the same urgency that their creation demanded.
 
