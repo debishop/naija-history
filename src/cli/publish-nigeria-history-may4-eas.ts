@@ -18,7 +18,7 @@ EAS Airlines Flight 4226 was operated by a BAC One-Eleven 525FT aircraft, regist
 
 From the first seconds after takeoff, something was terribly wrong.
 
-According to investigators and reporting by the Aviation Safety Network, the crew failed to execute a proper takeoff within the available runway distance. The aircraft overran, and during that overrun the engines ingested dust from the runway surface. Making matters worse, the flight crew failed to retract the landing gear after becoming airborne. The aircraft struggled to gain altitude with its gear down, its engines compromised, and the dense urban sprawl of Kano directly ahead.
+According to investigators and reporting by the Aviation Safety Network, the crew failed to execute a proper takeoff within the available runway distance. The aircraft overran, and during that overrun the engines ingested dust from the runway surface. Making matters worse, the flight crew failed to retract the landing gear after becoming airborne. The aircraft struggled to gain altitude with its gear down, its engines compromised, and the dense urban sprawl of Kano directly ahead. As the crew fought to control the stricken aircraft, the captain transmitted his final words to air traffic control: "My take off is difficult, I heard a sound on my right engine. The aircraft is wobbling. I think I am in a difficult situation."
 
 The plane struck a mosque minaret. It then tore through a cluster of residential homes and an Islamic school in the Gwammaja Quarters before bursting into flames. The BBC and CNN reported the disaster the same day. What had been a routine afternoon commuter flight became a catastrophe within moments of leaving the ground.
 
