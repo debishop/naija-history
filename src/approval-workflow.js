@@ -32,7 +32,7 @@ export class ApprovalWorkflow {
     if (!agentId) throw new Error("agentId is required");
 
     const imageSummary = images
-      .map((img, i) => `**Option ${i + 1}:** [View image](${img.url})\n> ${img.revisedPrompt}`)
+      .map((img, i) => `**Option ${i + 1}:**\n\n![Option ${i + 1}](${img.url})\n\n> ${img.revisedPrompt}`)
       .join("\n\n");
 
     const payload = {
