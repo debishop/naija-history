@@ -3,7 +3,7 @@ dotenv.config();
 
 import { initSecrets } from '../services/secrets';
 import { getPool, closePool } from '../db/pool';
-import { publishPost } from '../services/facebook';
+import { deletePost, uploadPagePhoto, publishPostWithPhoto } from '../services/facebook';
 import { notifySlack } from '../services/notifications';
 
 const POST_BODY = `🗓️ TODAY IN NIGERIAN HISTORY — May 5
@@ -38,11 +38,13 @@ Nigeria remembers him today.
 
 What do you believe is the most important lesson Yar'Adua's presidency left for Nigeria's political future?
 
-📷 President Umaru Yar'Adua at the World Economic Forum Annual Meeting, Davos, 2008 (Andy Mettler / World Economic Forum, CC BY-SA 2.0): https://upload.wikimedia.org/wikipedia/commons/2/27/YarAdua_WEF_2008.jpg
-
 #TodayInNigerianHistory #NigerianHistory #YarAdua #NigerianPresident #NigerianPolitics #May5 #Nigeria2010 #NigerianHeritage #Nigeria #AfricanHistory #NigeriaRemembers #GoodluckJonathan #PDP #Katsina #NigerianGovernance #ConstitutionalCrisis #SevenPointAgenda #NigerianRepublic #NigerDelta #AsoRock`;
 
 const THEME = "Death of President Yar'Adua — Today in Nigerian History, May 5, 2010";
+
+const IMAGE_URL = 'https://upload.wikimedia.org/wikipedia/commons/2/27/YarAdua_WEF_2008.jpg';
+const IMAGE_CAPTION = 'President Umaru Yar\'Adua at the World Economic Forum Annual Meeting, Davos, 2008 (Andy Mettler / World Economic Forum, CC BY-SA 2.0)';
+const DELETE_POST_ID = process.env['DELETE_POST'] ?? '1116239471553252_122111271596921906';
 
 async function saveDraftPost(body: string): Promise<string> {
   const pool = getPool();
@@ -101,29 +103,23 @@ async function writePostRecord(draftId: string, facebookPostId: string): Promise
   );
 }
 
-async function getExistingPostRecord(draftId: string): Promise<string | null> {
-  const pool = getPool();
-  interface RecordRow { facebook_post_id: string }
-  const result = await pool.query<RecordRow>(
-    `SELECT facebook_post_id FROM post_records WHERE draft_post_id = $1 AND status = 'published' LIMIT 1`,
-    [Number(draftId)]
-  );
-  return result.rows[0]?.facebook_post_id ?? null;
-}
 
 async function main(): Promise<void> {
   initSecrets();
 
+  if (DELETE_POST_ID) {
+    console.log(`Deleting existing post: ${DELETE_POST_ID}`);
+    try {
+      await deletePost(DELETE_POST_ID);
+      console.log('Deleted.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.warn(`Warning: could not delete post (${msg}). Continuing with publish.`);
+    }
+  }
+
   const draftId = await saveDraftPost(POST_BODY);
   console.log(`Draft saved as ID ${draftId}`);
-
-  const existingPostId = await getExistingPostRecord(draftId);
-  if (existingPostId) {
-    const facebookPostUrl = `https://www.facebook.com/${existingPostId}`;
-    console.log(`Already published: ${facebookPostUrl}`);
-    await notifySlack({ event: 'published', facebookPostUrl, excerpt: POST_BODY.slice(0, 200) });
-    return;
-  }
 
   const draft = {
     id: draftId,
@@ -136,8 +132,12 @@ async function main(): Promise<void> {
     status: 'approved' as const,
   };
 
-  const facebookPostId = await publishPost(draft);
-  console.log('Published text post.');
+  console.log(`Uploading image: ${IMAGE_URL}`);
+  const photoId = await uploadPagePhoto(IMAGE_URL, IMAGE_CAPTION);
+  console.log(`Uploaded photo ID: ${photoId}`);
+
+  const facebookPostId = await publishPostWithPhoto(draft, photoId);
+  console.log('Published post with inline image.');
 
   await markDraftPublished(draftId);
   await writePostRecord(draftId, facebookPostId);

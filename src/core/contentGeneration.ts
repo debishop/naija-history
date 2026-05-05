@@ -13,6 +13,8 @@ export interface DraftPost {
   sourceName: string;
   generatedAt: Date;
   status: 'draft' | 'approved' | 'rejected' | 'pending_approval' | 'published';
+  imageUrl?: string;
+  imageCaption?: string;
 }
 
 interface DbDraftRow {

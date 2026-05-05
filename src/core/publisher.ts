@@ -1,5 +1,5 @@
 import { getPool } from '../db/pool';
-import { publishPost, FacebookPublishError } from '../services/facebook';
+import { publishPost, publishPostWithPhoto, uploadPagePhoto, FacebookPublishError } from '../services/facebook';
 import type { DraftPost } from './contentGeneration';
 
 export interface PostRecord {
@@ -67,6 +67,10 @@ async function publishWithRetry(draft: DraftPost): Promise<string> {
   let lastError: unknown;
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
+      if (draft.imageUrl) {
+        const photoId = await uploadPagePhoto(draft.imageUrl, draft.imageCaption ?? '');
+        return await publishPostWithPhoto(draft, photoId);
+      }
       return await publishPost(draft);
     } catch (err) {
       lastError = err;
