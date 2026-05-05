@@ -52,8 +52,6 @@ Twenty four years later, the lessons of that afternoon are written into Nigerian
 
 Over 100 lives lost in seconds on May 4, 2002. How has Nigeria's aviation sector changed since that tragedy? Share your thoughts below.
 
-Watch more: https://www.youtube.com/watch?v=RHyS3N5BLDY
-
 📷 Aircraft image: 5N ESF (BAC One Eleven 525FT) photographed in 1992 in TAROM livery (Torsten Maiwald/JetPix, GNU FDL 1.2): https://upload.wikimedia.org/wikipedia/commons/e/ed/British_Aerospace_BAC-111-525FT_One-Eleven%2C_Tarom_AN0195094.jpg
 
 📷 Kano Airport aerial view (Javy010, CC BY-SA 4.0): https://upload.wikimedia.org/wikipedia/commons/0/08/Overview_of_Kano_Airport.jpg
