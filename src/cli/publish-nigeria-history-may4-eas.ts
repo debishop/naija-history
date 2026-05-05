@@ -14,43 +14,29 @@ On the afternoon of May 4, 2002, a passenger aircraft lifted off from Mallam Ami
 
 The Flight That Never Left Kano
 
-EAS Airlines Flight 4226 was operated by a BAC One Eleven 525FT aircraft, registered 5N ESF, on a scheduled passenger service from Kano to Lagos. The aircraft was carrying 69 passengers and 8 crew members when it departed the runway at Mallam Aminu Kano International Airport on the afternoon of May 4, 2002.
+EAS Airlines Flight 4226 was operated by a BAC One Eleven 525FT aircraft, registered 5N ESF, on a scheduled passenger service from Kano to Lagos. It was carrying 69 passengers and 8 crew members when it departed the runway on the afternoon of May 4, 2002.
 
 From the first seconds after takeoff, something was terribly wrong.
 
-According to investigators and reporting by the Aviation Safety Network, the crew failed to execute a proper takeoff within the available runway distance. The aircraft overran, and during that overrun the engines ingested dust from the runway surface. Making matters worse, the flight crew failed to retract the landing gear after becoming airborne. The aircraft struggled to gain altitude with its gear down, its engines compromised, and the dense urban sprawl of Kano directly ahead. As the crew fought to control the stricken aircraft, the captain transmitted his final words to air traffic control, reporting that his takeoff was difficult, that he had heard a sound in his right engine, that the aircraft was wobbling, and that he believed he was in a difficult situation.
+According to investigators and the Aviation Safety Network, the crew failed to execute a proper takeoff within the available runway distance. The aircraft overran, and during that overrun the engines ingested dust from the runway surface. The flight crew then failed to retract the landing gear after becoming airborne, increasing drag and preventing the aircraft from gaining safe altitude. As they fought for control, the captain transmitted his final words to air traffic control, reporting that his takeoff was difficult, that he had heard a sound in his right engine, that the aircraft was wobbling, and that he believed he was in a difficult situation.
 
-The plane struck a mosque minaret. It then tore through a cluster of residential homes and an Islamic school in the Gwammaja Quarters before bursting into flames. The BBC and CNN reported the disaster the same day. What had been a routine afternoon commuter flight became a catastrophe within moments of leaving the ground.
+The plane struck a mosque minaret, then tore through a cluster of residential homes and an Islamic school in the Gwammaja Quarters before bursting into flames.
 
 The Human Toll
 
-The numbers were staggering. Sixty six passengers and seven crew members died on board. On the ground, the crash killed at least 30 civilians and injured more than 47 others. More than 30 homes were destroyed. The total death toll exceeded 100 people, with official counts placing it at approximately 103 (Aviation Safety Network; Wikipedia). Early news reports cited higher preliminary figures before final body counts were complete (The New Humanitarian, May 6, 2002; CNN, May 5, 2002). Only four people survived.
+Sixty six passengers and seven crew members died on board. On the ground, the crash killed at least 30 civilians and injured more than 47 others. More than 30 homes were destroyed. The total death toll exceeded 100 people, with official counts placing it at approximately 103 (Aviation Safety Network; Wikipedia). Only four people survived.
 
-Among the dead was Ishaya Mark Aku, Nigeria's Minister of Sport. Aku had been travelling to Lagos in connection with a FIFA World Cup warm up match between Nigeria and Kenya ahead of the 2002 World Cup in Japan and South Korea. Also killed were Julie Useni and Danjuma Useni, the wife and son of Jeremiah Useni, the former Federal Capital Territory Minister. The loss of government figures alongside hundreds of ordinary citizens underscored how indiscriminate the disaster was.
+Among the dead was Ishaya Mark Aku, Nigeria's Minister of Sport. He had been travelling to Lagos for a FIFA World Cup warm up match between Nigeria and Kenya ahead of the 2002 World Cup. Also killed were Julie Useni and Danjuma Useni, the wife and son of Jeremiah Useni, the former Federal Capital Territory Minister. The loss of public figures alongside ordinary citizens made the grief of that day feel national in reach.
 
-A City in Shock, a Nation in Mourning
+A Nation in Mourning
 
-Kano reacted with grief and fury. Gwammaja Quarters descended into scenes of rescue workers pulling bodies from smoldering wreckage while residents attempted to save whatever they could from destroyed homes. President Olusegun Obasanjo declared two days of national mourning. Aviation Minister Kema Chikwe moved swiftly: all BAC One Eleven aircraft operating in Nigeria were grounded pending review (The New Humanitarian, May 9, 2002).
+President Olusegun Obasanjo declared two days of national mourning. Aviation Minister Kema Chikwe moved swiftly: all BAC One Eleven aircraft in Nigeria were grounded pending review (The New Humanitarian, May 9, 2002). In the weeks that followed, the federal government introduced a sweeping new rule: no aircraft more than 22 years old could be registered to operate in Nigeria.
 
-The decision pointed to a deeper crisis that the Kano disaster had made impossible to ignore. Many of the aircraft operating in Nigerian skies were aging, poorly maintained, and inadequately regulated. The BAC One Eleven that crashed into Gwammaja had been manufactured decades earlier. In the immediate aftermath of the disaster, the federal government introduced a sweeping new rule: no aircraft more than 22 years old could be registered to operate in Nigeria.
+The investigation was unsparing. Pilot error, failure to follow procedures, aging aircraft, inadequate maintenance oversight, and missing flight recorders all contributed. These were correctable failures that had been allowed to persist. The crash remains the deadliest accident ever involving a BAC One Eleven aircraft, and it is widely recognised as the event that made aviation reform politically unavoidable in Nigeria.
 
-A Watershed for Nigerian Aviation
+Twenty four years later, the lessons of Gwammaja are written into Nigerian aviation law. The Gwammaja community bore the full weight of that disaster: homes destroyed, neighbours lost, a neighbourhood forever marked by what fell from the sky that Saturday. The four survivors of Flight 4226 lived. More than 100 people did not.
 
-The EAS Airlines crash did not occur in isolation. It was one disaster in a string of aviation tragedies that struck Nigeria in the early 2000s. The Bellview Airlines crash of October 2005 and the Sosoliso Airlines crash of December 2005 followed within a few years, each adding further pressure on regulators, the government, and the public to demand structural reform.
-
-Together, these disasters forced a reckoning with Nigeria's aviation safety culture. The Nigerian Civil Aviation Authority (NCAA) came under sustained pressure to modernize. The result was the development and promulgation of the Nigerian Civil Aviation Regulations (NCAR), a comprehensive regulatory framework designed to bring Nigerian aviation standards in line with international norms. The EAS Airlines disaster of 2002 is widely recognized as the event that gave that reform effort its urgency and political momentum.
-
-The causes identified in the Kano crash were not mysteries: pilot error, failure to follow established procedures, aging aircraft, and an oversight environment that had allowed unsafe conditions to persist. These were correctable failures. The tragedy was that correction required more than 100 deaths to become politically unavoidable.
-
-What Kano Remembered
-
-Gwammaja was a neighborhood of ordinary lives on the afternoon of May 4, 2002. People were going to work, children were in school. A mosque stood as a landmark on the approach path. By that afternoon, the neighborhood was the center of a national tragedy, its streets full of rescuers, its sky still thick with smoke from the burning wreckage of a modern passenger aircraft that had failed its most basic task: to carry people safely from one city to another.
-
-The four survivors of Flight 4226 lived. More than 100 people did not.
-
-Twenty four years later, the lessons of that afternoon are written into Nigerian aviation law. The question is whether those laws are enforced with the same urgency that their creation demanded.
-
-Over 100 lives lost in seconds on May 4, 2002. How has Nigeria's aviation sector changed since that tragedy? Share your thoughts below.
+Over 100 lives lost on May 4, 2002. How has Nigeria's aviation sector changed since that tragedy? Share your thoughts below.
 
 📷 Aircraft image: 5N ESF (BAC One Eleven 525FT) photographed in 1992 in TAROM livery (Torsten Maiwald/JetPix, GNU FDL 1.2): https://upload.wikimedia.org/wikipedia/commons/e/ed/British_Aerospace_BAC-111-525FT_One-Eleven%2C_Tarom_AN0195094.jpg
 
