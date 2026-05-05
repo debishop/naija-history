@@ -55,6 +55,7 @@ async function saveDraftPost(body: string): Promise<string> {
     `INSERT INTO story_candidates
        (source_url, source_domain, source_name, title, summary, raw_content, content_hash, published_at, fetched_at)
      VALUES ($1, $2, $3, $4, $5, $6, md5($6), NULL, NOW())
+     ON CONFLICT (content_hash) DO UPDATE SET fetched_at = story_candidates.fetched_at
      RETURNING id`,
     [
       `direct://eas-airlines-flight-4226-kano-2002`,
@@ -66,6 +67,15 @@ async function saveDraftPost(body: string): Promise<string> {
     ]
   );
   const storyId = candidateResult.rows[0].id;
+
+  // Re-use existing draft if one already exists for this story candidate
+  const existing = await pool.query<DraftRow>(
+    `SELECT id FROM draft_posts WHERE story_candidate_id = $1 ORDER BY id DESC LIMIT 1`,
+    [storyId]
+  );
+  if (existing.rows.length > 0) {
+    return String(existing.rows[0].id);
+  }
 
   const draftResult = await pool.query<DraftRow>(
     `INSERT INTO draft_posts
@@ -94,11 +104,29 @@ async function writePostRecord(draftId: string, facebookPostId: string): Promise
   );
 }
 
+async function getExistingPostRecord(draftId: string): Promise<string | null> {
+  const pool = getPool();
+  interface RecordRow { facebook_post_id: string }
+  const result = await pool.query<RecordRow>(
+    `SELECT facebook_post_id FROM post_records WHERE draft_post_id = $1 AND status = 'published' LIMIT 1`,
+    [Number(draftId)]
+  );
+  return result.rows[0]?.facebook_post_id ?? null;
+}
+
 async function main(): Promise<void> {
   initSecrets();
 
   const draftId = await saveDraftPost(POST_BODY);
   console.log(`Draft saved as ID ${draftId}`);
+
+  const existingPostId = await getExistingPostRecord(draftId);
+  if (existingPostId) {
+    const facebookPostUrl = `https://www.facebook.com/${existingPostId}`;
+    console.log(`Already published: ${facebookPostUrl}`);
+    await notifySlack({ event: 'published', facebookPostUrl, excerpt: POST_BODY.slice(0, 200) });
+    return;
+  }
 
   const draft = {
     id: draftId,
