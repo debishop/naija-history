@@ -22,8 +22,6 @@ const POST_BODY = `Today in Nigerian History | May 11, 1996
 
 Thirty years ago today, Nigeria lost one of the greatest sons it ever produced. On May 11, 1996, Benjamin Nnamdi Azikiwe, the man the world called Zik of Africa, took his last breath at the University of Nigeria Teaching Hospital in Enugu. He was 91 years old. (Sources: Britannica; Wikipedia)
 
-Nigeria was never the same again.
-
 But who was Zik, really? To understand what we lost that day, you have to go back to the beginning.
 
 Nnamdi Azikiwe was born on November 16, 1904, in Zungeru, in the Northern Nigeria Protectorate. His parents were Igbo, originally from Onitsha. From the very start, there was something about the young Zik that set him apart. He left Nigeria as a young man with a burning desire to prove that an African mind could stand equal to any in the world. He studied at Lincoln University in Pennsylvania, the University of Pennsylvania, Howard University, and Columbia University. Not one degree. Four institutions. A hunger that could not be satisfied. (Source: Britannica)
@@ -34,7 +32,7 @@ His political career followed the rise of his voice. In 1944, he cofounded the N
 
 Zik rose steadily through the political ranks. From 1954 to 1959, he served as Premier of the Eastern Region. Then came the most consequential moment in Nigerian history: October 1, 1960, when the British finally lowered their flag and Nigeria stood free. Six weeks later, on November 16 of that same year, Azikiwe was sworn in as the first indigenous Governor General of the new nation. He held that office until 1963. And when Nigeria became a republic on October 1, 1963, he became the nation's first President. A boy born in Zungeru was now the head of state of Africa's most populous nation. (Sources: Britannica; Wikipedia)
 
-It did not last. On January 15, 1966, a military coup staged by a group of army officers ended civilian rule in Nigeria. The coup was planned and led by a cadre of majors, principally Major Chukwuma Kaduna Nzeogwu, who commanded operations in Kaduna. Zik was abroad when the coup happened. The plotters failed to consolidate power, and the following day General Ironsi, Commander of the Nigerian Army, assumed control of the government as Head of State. Zik returned to a country that had been seized from civilian hands. The republic he had helped build was now under military command. (Source: Wikipedia)
+It did not last. On January 15, 1966, a military coup ended civilian rule in Nigeria. Zik was abroad when it happened and returned to find a country seized from civilian hands. The republic he had helped build was now under military command. (Source: Wikipedia)
 
 But Azikiwe did not disappear. He remained a voice. He ran for the presidency again in 1979 and in 1983 under the Nigerian People Party, each time losing, but never surrendering the belief that democratic leadership was the right path for Nigeria. (Source: BlackPast)
 
