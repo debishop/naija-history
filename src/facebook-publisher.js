@@ -55,10 +55,11 @@ export class FacebookPublisher {
     }
     enforceMinWordCount(message, "Text post");
 
+    const pageToken = await this.#getPageAccessToken();
     const url = `${GRAPH_API_BASE}/${this.#pageId}/feed`;
     const body = new URLSearchParams({
       message,
-      access_token: this.#accessToken,
+      access_token: pageToken,
     });
 
     const res = await fetch(url, { method: "POST", body });
@@ -72,11 +73,12 @@ export class FacebookPublisher {
 
     const url = `${GRAPH_API_BASE}/${this.#pageId}/photos`;
 
+    const pageToken = await this.#getPageAccessToken();
     let res;
     if (imageUrl) {
       const body = new URLSearchParams({
         url: imageUrl,
-        access_token: this.#accessToken,
+        access_token: pageToken,
       });
       if (caption) body.set("message", caption);
       res = await fetch(url, { method: "POST", body });
@@ -84,7 +86,7 @@ export class FacebookPublisher {
       const fileData = await readFile(imagePath);
       const form = new FormData();
       form.set("source", new Blob([fileData]), basename(imagePath));
-      form.set("access_token", this.#accessToken);
+      form.set("access_token", pageToken);
       if (caption) form.set("message", caption);
       res = await fetch(url, { method: "POST", body: form });
     }
@@ -93,7 +95,8 @@ export class FacebookPublisher {
   }
 
   async verifyToken() {
-    const url = `${GRAPH_API_BASE}/me?fields=id,name&access_token=${this.#accessToken}`;
+    const pageToken = await this.#getPageAccessToken();
+    const url = `${GRAPH_API_BASE}/me?fields=id,name&access_token=${pageToken}`;
     const res = await fetch(url);
     const data = await res.json();
 

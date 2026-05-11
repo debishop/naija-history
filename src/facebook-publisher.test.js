@@ -39,9 +39,12 @@ describe("FacebookPublisher", () => {
   it("accepts text posts with exactly 600 words", async () => {
     const pub = new FacebookPublisher({ pageId: "123", accessToken: "tok" });
     const exactMessage = Array(600).fill("word").join(" ");
-    globalThis.fetch = mock.fn(async () => ({
-      json: async () => ({ id: "12345_11111" }),
-    }));
+    let callCount = 0;
+    globalThis.fetch = mock.fn(async () => {
+      callCount++;
+      if (callCount === 1) return { json: async () => ({ access_token: "page-tok" }) };
+      return { json: async () => ({ id: "12345_11111" }) };
+    });
     const result = await pub.publishTextPost(exactMessage);
     assert.equal(result.id, "12345_11111");
     globalThis.fetch = undefined;
@@ -63,7 +66,13 @@ describe("FacebookPublisher", () => {
     });
 
     it("publishTextPost sends correct request and returns post id", async () => {
+      let callCount = 0;
       globalThis.fetch = mock.fn(async (url, opts) => {
+        callCount++;
+        if (callCount === 1) {
+          assert.ok(url.includes("/12345?fields=access_token"));
+          return { json: async () => ({ access_token: "page-token-123" }) };
+        }
         assert.ok(url.includes("/12345/feed"));
         assert.equal(opts.method, "POST");
         return { json: async () => ({ id: "12345_67890" }) };
@@ -75,7 +84,12 @@ describe("FacebookPublisher", () => {
     });
 
     it("publishPhoto with URL sends correct request", async () => {
+      let callCount = 0;
       globalThis.fetch = mock.fn(async (url, opts) => {
+        callCount++;
+        if (callCount === 1) {
+          return { json: async () => ({ access_token: "page-token-123" }) };
+        }
         assert.ok(url.includes("/12345/photos"));
         assert.equal(opts.method, "POST");
         return { json: async () => ({ id: "12345_99999", post_id: "12345_88888" }) };
@@ -90,12 +104,17 @@ describe("FacebookPublisher", () => {
     });
 
     it("handles expired token error", async () => {
-      globalThis.fetch = mock.fn(async () => ({
-        status: 400,
-        json: async () => ({
-          error: { message: "Token expired", type: "OAuthException", code: 190, fbtrace_id: "abc" },
-        }),
-      }));
+      let callCount = 0;
+      globalThis.fetch = mock.fn(async () => {
+        callCount++;
+        if (callCount === 1) return { json: async () => ({ access_token: "page-tok" }) };
+        return {
+          status: 400,
+          json: async () => ({
+            error: { message: "Token expired", type: "OAuthException", code: 190, fbtrace_id: "abc" },
+          }),
+        };
+      });
 
       await assert.rejects(
         () => pub.publishTextPost(longMessage),
@@ -110,12 +129,17 @@ describe("FacebookPublisher", () => {
     });
 
     it("handles rate limit error", async () => {
-      globalThis.fetch = mock.fn(async () => ({
-        status: 429,
-        json: async () => ({
-          error: { message: "Too many calls", type: "OAuthException", code: 4, fbtrace_id: "xyz" },
-        }),
-      }));
+      let callCount = 0;
+      globalThis.fetch = mock.fn(async () => {
+        callCount++;
+        if (callCount === 1) return { json: async () => ({ access_token: "page-tok" }) };
+        return {
+          status: 429,
+          json: async () => ({
+            error: { message: "Too many calls", type: "OAuthException", code: 4, fbtrace_id: "xyz" },
+          }),
+        };
+      });
 
       await assert.rejects(
         () => pub.publishTextPost(longMessage),
@@ -129,12 +153,17 @@ describe("FacebookPublisher", () => {
     });
 
     it("handles permission error", async () => {
-      globalThis.fetch = mock.fn(async () => ({
-        status: 403,
-        json: async () => ({
-          error: { message: "Insufficient permission", type: "OAuthException", code: 200, fbtrace_id: "perm" },
-        }),
-      }));
+      let callCount = 0;
+      globalThis.fetch = mock.fn(async () => {
+        callCount++;
+        if (callCount === 1) return { json: async () => ({ access_token: "page-tok" }) };
+        return {
+          status: 403,
+          json: async () => ({
+            error: { message: "Insufficient permission", type: "OAuthException", code: 200, fbtrace_id: "perm" },
+          }),
+        };
+      });
 
       await assert.rejects(
         () => pub.publishTextPost(longMessage),
@@ -148,9 +177,12 @@ describe("FacebookPublisher", () => {
     });
 
     it("verifyToken returns page info on success", async () => {
-      globalThis.fetch = mock.fn(async () => ({
-        json: async () => ({ id: "12345", name: "The Lens" }),
-      }));
+      let callCount = 0;
+      globalThis.fetch = mock.fn(async () => {
+        callCount++;
+        if (callCount === 1) return { json: async () => ({ access_token: "page-tok" }) };
+        return { json: async () => ({ id: "12345", name: "The Lens" }) };
+      });
 
       const result = await pub.verifyToken();
       assert.deepEqual(result, { valid: true, pageId: "12345", pageName: "The Lens" });
