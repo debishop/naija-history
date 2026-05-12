@@ -46,7 +46,7 @@ Under his leadership, the Western Region became the first in Africa to introduce
 
 His industrialization agenda transformed the Western Region into one of Nigeria's most economically productive areas, building infrastructure and attracting investment that others would spend decades trying to replicate. (Source: Wikipedia, Obafemi Awolowo)
 
-He gave Africa its first television station. In 1959, Awolowo's government established the Western Nigeria Television Service, WNTV, the first television broadcasting service in sub-Saharan Africa. (Source: Wikipedia, Obafemi Awolowo) While others were still debating what was possible, Awolowo was already showing what was done.
+He gave Africa its first television station. In 1959, Awolowo's government established the Western Nigeria Television Service, WNTV, the first television broadcasting service south of the Sahara. (Source: Wikipedia, Obafemi Awolowo) While others were still debating what was possible, Awolowo was already showing what was done.
 
 He gave Nigeria its currency identity. When he served as Federal Commissioner for Finance, Awolowo proposed and championed the name Naira for the national currency. (Source: Wikipedia, Obafemi Awolowo) Every time a Nigerian pulls out cash today, they are, whether they know it or not, touching Awolowo's fingerprints on this nation.
 
@@ -54,7 +54,7 @@ The university that now carries his name was founded in 1961 by Samuel Ladoke Ak
 
 Today, Obafemi Awolowo University is consistently ranked among the top universities in Nigeria and across Africa. It has produced lawyers, doctors, engineers, writers, and innovators who have gone on to shape Nigeria and the world. Every student who walks through the famous gate in Ile Ife walks beneath a name that stood for something.
 
-When Babangida signed that decree on May 12, 1987, he was not doing Awolowo a favor. He was paying a debt Nigeria owed. A man who brought free education, free healthcare for children, sub-Saharan Africa's first television station, and the name of the national currency deserved more than a statue. He deserved a living institution. He deserved a place where young Nigerians would learn, grow, and carry forward the belief that excellence and service are not mutually exclusive.
+When Babangida signed that decree on May 12, 1987, he was not doing Awolowo a favor. He was paying a debt Nigeria owed. A man who brought free education, free healthcare for children, Africa's first television station south of the Sahara, and the name of the national currency deserved more than a statue. He deserved a living institution. He deserved a place where young Nigerians would learn, grow, and carry forward the belief that excellence and service are not mutually exclusive.
 
 Emeka Ojukwu called him the best president Nigeria never had. (Source: Wikipedia, Obafemi Awolowo) Awolowo ran for president and lost. But his legacy did not need the title. It outlasted the men who beat him.
 
