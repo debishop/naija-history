@@ -1,5 +1,6 @@
 import { getSecrets, SECRET_KEYS } from './secrets';
 import type { DraftPost } from '../core/contentGeneration';
+import { findAffiliateMatch, buildAffiliateFooter } from './affiliateLinks';
 
 const GRAPH_API_VERSION = 'v19.0';
 const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
@@ -122,7 +123,9 @@ export class FacebookPublishError extends Error {
 }
 
 function buildPostMessage(draft: DraftPost): string {
-  return draft.body;
+  const match = findAffiliateMatch(draft.body);
+  if (!match) return draft.body;
+  return `${draft.body}\n\n${buildAffiliateFooter(match)}`;
 }
 
 /**
