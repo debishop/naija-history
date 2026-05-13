@@ -3,6 +3,9 @@ import { FacebookPublisher } from "./facebook-publisher.js";
 import { FacebookTokenManager } from "./token-manager.js";
 import { ImageGenerator, CANDIDATE_COUNT } from "./image-generator.js";
 import { ApprovalWorkflow } from "./approval-workflow.js";
+import { ContentResearchPipeline } from "./content-research.js";
+import { IdeaValidator } from "./idea-validator.js";
+import { AnalyticsDashboard } from "./analytics-dashboard.js";
 
 const publisher = FacebookPublisher.fromEnv();
 
@@ -152,8 +155,69 @@ async function main() {
       break;
     }
 
+    case "scan": {
+      const pipeline = new ContentResearchPipeline();
+      console.log(`Scanning ${pipeline.getSourceCount()} approved sources...`);
+      const result = await pipeline.scanAllSources();
+      const summary = pipeline.getScanSummary(result);
+      console.log(`\nScan complete: ${summary.rawItemsFound} items from ${summary.scannedSources} sources`);
+      console.log(`Nigeria-relevant leads: ${summary.nigeriaRelevantLeads}`);
+      if (summary.errorCount > 0) console.log(`Errors: ${summary.errorCount}`);
+      console.log(`\nTop ${summary.topLeads.length} leads:`);
+      for (const lead of summary.topLeads) {
+        console.log(`  [${lead.score.toFixed(1)}] ${lead.title}`);
+        console.log(`         Source: ${lead.source} | Angles: ${lead.angles.join(", ")}`);
+      }
+      const path = await pipeline.saveLeads(result.leads);
+      console.log(`\nLeads saved to: ${path}`);
+      break;
+    }
+
+    case "validate": {
+      const pipeline = new ContentResearchPipeline();
+      const leadsFile = args[0];
+      if (!leadsFile) {
+        console.error("Usage: cli.js validate <leads-file.json>");
+        console.error("  Run 'scan' first to generate a leads file.");
+        process.exit(1);
+      }
+      const data = await pipeline.loadLeads(leadsFile);
+      const validator = new IdeaValidator();
+      const topIdeas = validator.getTopIdeas(data.leads);
+      console.log(`\nTop ${topIdeas.length} validated ideas:\n`);
+      for (const [i, idea] of topIdeas.entries()) {
+        console.log(`${i + 1}. [${idea.grade}] ${idea.lead.title}`);
+        console.log(`   Score: ${idea.finalScore}/10 | Source: ${idea.lead.source}`);
+        console.log(`   Hook: ${idea.breakdown.hook.bestHookType || "none"} | Emotion: ${idea.breakdown.emotion.dominantEmotion || "flat"}`);
+        console.log(`   ${idea.recommendation}`);
+        if (idea.suggestedHeadline) console.log(`   Suggested: ${idea.suggestedHeadline}`);
+        console.log();
+      }
+      break;
+    }
+
+    case "weekly-report": {
+      const dashboard = AnalyticsDashboard.fromEnv();
+      console.log("Generating weekly analytics report...");
+      const report = await dashboard.generateWeeklyReport();
+      const markdown = dashboard.formatReportAsMarkdown(report);
+      console.log(markdown);
+      const path = await dashboard.saveReport(report);
+      console.log(`\nReport saved to: ${path}`);
+      break;
+    }
+
+    case "page-stats": {
+      const dashboard2 = AnalyticsDashboard.fromEnv();
+      const overview = await dashboard2.getPageOverview();
+      console.log(`Page: ${overview.name}`);
+      console.log(`Followers: ${(overview.followers_count || overview.fan_count || 0).toLocaleString()}`);
+      console.log(`Talking about: ${(overview.talking_about_count || 0).toLocaleString()}`);
+      break;
+    }
+
     default:
-      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval, upload-profile-picture, upload-cover-photo");
+      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval, upload-profile-picture, upload-cover-photo, scan, validate, weekly-report, page-stats");
       process.exit(1);
   }
 }
