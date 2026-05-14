@@ -6,6 +6,7 @@ import { ApprovalWorkflow } from "./approval-workflow.js";
 import { ContentResearchPipeline } from "./content-research.js";
 import { IdeaValidator } from "./idea-validator.js";
 import { AnalyticsDashboard } from "./analytics-dashboard.js";
+import { createDashboardServer } from "./dashboard-server.js";
 
 const publisher = FacebookPublisher.fromEnv();
 
@@ -207,6 +208,13 @@ async function main() {
       break;
     }
 
+    case "dashboard": {
+      const port = parseInt(args[0] || "3000", 10);
+      const dashboardServer = createDashboardServer({ port });
+      await dashboardServer.start();
+      break;
+    }
+
     case "page-stats": {
       const dashboard2 = AnalyticsDashboard.fromEnv();
       const overview = await dashboard2.getPageOverview();
@@ -217,7 +225,7 @@ async function main() {
     }
 
     default:
-      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval, upload-profile-picture, upload-cover-photo, scan, validate, weekly-report, page-stats");
+      console.error("Commands: verify, text, photo, insights, token-check, token-debug, generate-images, approve-images, check-approval, upload-profile-picture, upload-cover-photo, scan, validate, weekly-report, page-stats, dashboard");
       process.exit(1);
   }
 }

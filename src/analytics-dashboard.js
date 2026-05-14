@@ -217,6 +217,56 @@ export class AnalyticsDashboard {
     return lines.join("\n");
   }
 
+  async getAudienceDemographics() {
+    const metrics = ["page_fans_gender_age", "page_fans_city", "page_fans_country"];
+    const metricList = metrics.join(",");
+    const url = `${GRAPH_API_BASE}/${this.#pageId}/insights?metric=${metricList}&period=lifetime&access_token=${this.#accessToken}`;
+    const res = await this.#fetchFn(url);
+    const data = await res.json();
+    if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
+
+    const result = { genderAge: {}, cities: {}, countries: {} };
+    for (const metric of data.data || []) {
+      const latestValue = metric.values?.[metric.values.length - 1]?.value || {};
+      if (metric.name === "page_fans_gender_age") result.genderAge = latestValue;
+      else if (metric.name === "page_fans_city") result.cities = latestValue;
+      else if (metric.name === "page_fans_country") result.countries = latestValue;
+    }
+    return result;
+  }
+
+  async getInsightsTimeSeries({ period = "day", since, until, metrics } = {}) {
+    const defaultMetrics = [
+      "page_impressions",
+      "page_impressions_unique",
+      "page_engaged_users",
+      "page_post_engagements",
+      "page_fan_adds",
+      "page_views_total",
+    ];
+    const metricList = (metrics || defaultMetrics).join(",");
+    let url = `${GRAPH_API_BASE}/${this.#pageId}/insights?metric=${metricList}&period=${period}&access_token=${this.#accessToken}`;
+    if (since) url += `&since=${Math.floor(new Date(since).getTime() / 1000)}`;
+    if (until) url += `&until=${Math.floor(new Date(until).getTime() / 1000)}`;
+    const res = await this.#fetchFn(url);
+    const data = await res.json();
+    if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
+
+    const series = {};
+    for (const metric of data.data || []) {
+      series[metric.name] = {
+        title: metric.title,
+        description: metric.description,
+        period: metric.period,
+        values: (metric.values || []).map((v) => ({
+          date: v.end_time,
+          value: v.value,
+        })),
+      };
+    }
+    return series;
+  }
+
   async saveReport(report, filename) {
     await mkdir(this.#dataDir, { recursive: true });
     const path = join(this.#dataDir, filename || `report-${new Date().toISOString().slice(0, 10)}.json`);

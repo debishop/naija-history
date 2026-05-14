@@ -4,3 +4,4 @@ export { ContentResearchPipeline } from "./content-research.js";
 export { IdeaValidator } from "./idea-validator.js";
 export { AnalyticsDashboard } from "./analytics-dashboard.js";
 export { APPROVED_SOURCES, getFeedSources, getSourcesByCategory, getSourcesByPriority } from "./source-whitelist.js";
+export { createDashboardServer } from "./dashboard-server.js";
