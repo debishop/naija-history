@@ -21,7 +21,7 @@ const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
 const IMAGE_1_URL =
   'https://upload.wikimedia.org/wikipedia/commons/8/85/Benin_plaque_in_the_Ethnological_Museum%2C_Berlin_-_063.JPG';
 const IMAGE_1_CAPTION =
-  'Brass plaque from the Kingdom of Benin, 16th to 17th century, now held at the Ethnological Museum in Berlin. These plaques recorded the history and court life of Benin with extraordinary detail — cast by the Igun Eronmwon guild on Igun Street, Benin City. Photo: Daderot via Wikimedia Commons (CC0 1.0 Public Domain).';
+  'Brass plaque from the Kingdom of Benin, 16th to 17th century, now held at the Ethnological Museum in Berlin. These plaques recorded the history and court life of Benin with extraordinary detail, cast by the Igun Eronmwon guild on Igun Street, Benin City. Photo: Daderot via Wikimedia Commons (CC0 1.0 Public Domain).';
 
 const IMAGE_2_URL =
   'https://upload.wikimedia.org/wikipedia/commons/7/72/Africa_Benin_Standing_Oba_Kimbell.jpg';
@@ -31,7 +31,7 @@ const IMAGE_2_CAPTION =
 const IMAGE_3_URL =
   'https://upload.wikimedia.org/wikipedia/commons/1/16/Benin_Bronze.JPG';
 const IMAGE_3_CAPTION =
-  'Benin Bronze bust, one of thousands of artifacts taken during the 1897 British punitive expedition that looted Benin City. These bronzes are not merely art — they are Nigeria\'s stolen history books, and their return is one of the great cultural justice stories of our time. Photo: Wikimedia Commons (Public Domain).';
+  'Benin Bronze bust, one of thousands of artifacts taken during the 1897 British punitive expedition that looted Benin City. These bronzes are not merely art; they are Nigeria\'s stolen history books, and their return is one of the great cultural justice stories of our time. Photo: Wikimedia Commons (Public Domain).';
 
 const POST_BODY = `In 1897, British Soldiers Carried Off Thousands of Pieces of Nigerian History. Now Nigeria Is Taking Them Back.
 
@@ -47,7 +47,7 @@ On Igun Street in Benin City, there is a guild whose craft has passed from maste
 
 Then came 1897.
 
-A British punitive expedition marched into Benin City, set it ablaze, and carried away thousands of artifacts — bronzes, ivories, ceremonial regalia. These were not merely beautiful objects. They were the accumulated memory of a civilisation, recorded in metal and sacred context, ripped from their home and shipped to London, Berlin, Vienna, and Boston. In museums across Europe and North America, they were displayed without acknowledgment of the civilization that created them — rather than recognized as what they actually were: Nigeria's stolen history books. (Source: British Museum; Britannica)
+A British punitive expedition marched into Benin City, set it ablaze, and carried away thousands of artifacts: bronzes, ivories, ceremonial regalia. These were not merely beautiful objects. They were the accumulated memory of a civilisation, recorded in metal and sacred context, ripped from their home and shipped to London, Berlin, Vienna, and Boston. In museums across Europe and North America, they were displayed without acknowledgment of the civilization that created them, rather than recognized as what they actually were: Nigeria's stolen history books. (Source: British Museum; Britannica)
 
 For over a century, the descendants of those whose history was taken asked for it back. For over a century, the answer from Western institutions was silence, slow negotiation, or conditions that never quite became action.
 
