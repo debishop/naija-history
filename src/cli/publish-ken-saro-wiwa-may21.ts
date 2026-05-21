@@ -21,7 +21,7 @@ const IMAGE_1_CAPTION =
 
 const POST_BODY = `They Killed Four Men to Silence One Voice. It Did Not Work.
 
-May 21, 1994. In the town of Giokoo in Ogoniland, four community leaders were beaten to death at a meeting. Edward Kobani, Alfred Badey, Samuel Orage and Theophilus Orage never came home. But the man the Nigerian military government truly wanted to silence was not present that day. He had been blocked from entering Ogoniland that morning. By evening, soldiers came for him anyway.
+May 21, 1994. In the town of Giokoo in Ogoniland, four community leaders were beaten to death at a meeting. Edward Kobani, Albert Badey, Samuel Orage and Theophilus Orage never came home. But the man the Nigerian military government truly wanted to silence was not present that day. He had been blocked from entering Ogoniland that morning. By evening, soldiers came for him anyway.
 
 His name was Ken Saro Wiwa.
 
