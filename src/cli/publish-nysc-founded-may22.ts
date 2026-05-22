@@ -24,15 +24,15 @@ const POST_BODY = `May 22, 1973. A general signs a decree. Within two months, 2,
 
 It began with a war, and a question.
 
-Three years earlier, the Nigerian Civil War had ended. Approximately three million people had died. The country that remained was one nation on paper but was still quietly at war with itself. Communities that had once traded with each other were now silent with grief and suspicion. General Yakubu Gowon had declared no victor, no vanquished, but everyone knew that declarations alone cannot heal people. (Source: Pulse Nigeria, "50 years ago, Gowon created NYSC to stop another civil war")
+Three years earlier, the Nigerian Civil War had ended. Between one and three million people had died. The country that remained was one nation on paper but was still quietly at war with itself. Communities that had once traded with each other were now silent with grief and suspicion. General Yakubu Gowon had declared no victor, no vanquished, but everyone knew that declarations alone cannot heal people. (Source: Pulse Nigeria, "50 years ago, Gowon created NYSC to stop another civil war")
 
 Gowon built his rebuilding plan around three pillars: Reconciliation, Reconstruction, and Rehabilitation. Roads and buildings could be repaired with money and labour. But how do you rebuild the trust between people who had stood on opposite sides of one of Africa's bloodiest conflicts? (Source: Pulse Nigeria, "50 years ago, Gowon created NYSC to stop another civil war")
 
 On May 22, 1973, Gowon signed Decree No. 24, and the National Youth Service Corps was born. Every Nigerian graduate under the age of 30 would be posted to serve for one year in a state different from their state of origin. Not in their hometown. Not among their own people. Somewhere else. Someone else's home. (Source: Wikipedia, National Youth Service Corps; NYSC Official Website)
 
-The mind behind this idea was Chief Adebayo Adedeji, then Federal Commissioner for Economic Development and the intellectual architect of the scheme. Adedeji saw something bigger than a post war remedy. He saw a permanent instrument for building a nation. Young Nigerians would live beside each other, eat from each other's kitchens, and discover that the stranger they had been taught to fear was simply a neighbour they had never yet met. (Source: The Beam Media, "The History and Visionaries Behind the NYSC")
+The mind behind this idea was Professor Adebayo Adedeji, then Federal Commissioner for Economic Development and Reconstruction, the intellectual architect of the scheme. Adedeji saw something bigger than a post war remedy. He saw a permanent instrument for building a nation. Young Nigerians would live beside each other, eat from each other's kitchens, and discover that the stranger they had been taught to fear was simply a neighbour they had never yet met. (Source: The Beam Media, "The History and Visionaries Behind the NYSC")
 
-Colonel Ahmadu Adah Alli became the first Director General of the Corps, giving the scheme its operational structure from the very beginning. (Source: The Beam Media, "The History and Visionaries Behind the NYSC")
+Colonel Ahmadu Adah Ali became the first Director General of the Corps, giving the scheme its operational structure from the very beginning. (Source: The Beam Media, "The History and Visionaries Behind the NYSC")
 
 Less than seven weeks after the decree was signed, on July 2, 1973, the first batch of corps members reported for duty. There were 2,364 of them. Fresh graduates, packed and posted to communities they had never visited, among people whose customs were unfamiliar. That was the whole point. (Source: Class Notes NG, "Establishment of NYSC, May 22, 1973")
 
