@@ -275,7 +275,8 @@ async function loadPosts(){
       const comments=p.comments?.summary?.total_count||0;
       const msg=(p.message||'(no text)').slice(0,80);
       const date=p.created_time?new Date(p.created_time).toLocaleDateString():'';
-      return '<tr><td title="'+esc(p.message||'')+'">'+esc(msg)+'</td><td class="num">'+fmt(reactions)+'</td><td class="num">'+fmt(comments)+'</td><td class="num"><strong>'+fmt(reactions+comments)+'</strong></td><td>'+date+'</td></tr>';
+      const text=p.permalink_url?'<a href="'+esc(p.permalink_url)+'" target="_blank" rel="noopener" style="color:#1877f2;text-decoration:none">'+esc(msg)+'</a>':esc(msg);
+      return '<tr><td title="'+esc(p.message||'')+'">'+text+'</td><td class="num">'+fmt(reactions)+'</td><td class="num">'+fmt(comments)+'</td><td class="num"><strong>'+fmt(reactions+comments)+'</strong></td><td>'+date+'</td></tr>';
     }).join('');
   }catch(e){document.getElementById('postsBody').innerHTML='<tr><td colspan="5" class="error">'+e.message+'</td></tr>'}
 }
