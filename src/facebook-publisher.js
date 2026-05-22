@@ -193,7 +193,7 @@ export class FacebookPublisher {
   }
 
   async getPostInsights(postId) {
-    const url = `${GRAPH_API_BASE}/${postId}?fields=id,message,created_time,shares,likes.summary(true),comments.summary(true)&access_token=${this.#accessToken}`;
+    const url = `${GRAPH_API_BASE}/${postId}?fields=id,message,created_time,reactions.summary(true),comments.summary(true)&access_token=${this.#accessToken}`;
     const res = await fetch(url);
     return this.#handleResponse(res);
   }

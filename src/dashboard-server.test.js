@@ -34,8 +34,8 @@ function createMockFetch(responses = {}) {
           data: [
             {
               id: "post_1", message: "History of Lagos", created_time: new Date().toISOString(),
-              type: "status", permalink_url: "https://fb.com/post_1",
-              likes: { summary: { total_count: 150 } }, comments: { summary: { total_count: 45 } }, shares: { count: 30 },
+              permalink_url: "https://fb.com/post_1",
+              reactions: { summary: { total_count: 150 } }, comments: { summary: { total_count: 45 } },
             },
           ],
         },

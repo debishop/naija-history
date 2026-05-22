@@ -17,21 +17,17 @@ function createMockFetch(responses = {}) {
               id: "post_1",
               message: "The history of Lagos: from fishing village to Africa's largest city. This incredible journey spans centuries of trade, culture, and resilience.",
               created_time: new Date().toISOString(),
-              type: "status",
               permalink_url: "https://fb.com/post_1",
-              likes: { summary: { total_count: 150 } },
+              reactions: { summary: { total_count: 150 } },
               comments: { summary: { total_count: 45 } },
-              shares: { count: 30 },
             },
             {
               id: "post_2",
               message: "Queen Amina of Zazzau: the warrior queen who expanded the Hausa kingdom. #ad sponsored content for history book.",
               created_time: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-              type: "photo",
               permalink_url: "https://fb.com/post_2",
-              likes: { summary: { total_count: 80 } },
+              reactions: { summary: { total_count: 80 } },
               comments: { summary: { total_count: 20 } },
-              shares: { count: 15 },
             },
           ],
         },
@@ -77,7 +73,7 @@ describe("AnalyticsDashboard", () => {
     const posts = await dashboard.getRecentPosts();
 
     assert.equal(posts.length, 2);
-    assert.ok(posts[0].likes.summary.total_count > 0);
+    assert.ok(posts[0].reactions.summary.total_count > 0);
   });
 
   it("generates a weekly report", async () => {
@@ -94,9 +90,8 @@ describe("AnalyticsDashboard", () => {
     assert.equal(report.pageOverview.name, "The Lens - Nigeria History");
     assert.equal(report.pageOverview.followers, 4800);
     assert.ok(report.weeklyActivity.postsPublished >= 0);
-    assert.ok(typeof report.weeklyActivity.totalLikes === "number");
+    assert.ok(typeof report.weeklyActivity.totalReactions === "number");
     assert.ok(typeof report.weeklyActivity.totalComments === "number");
-    assert.ok(typeof report.weeklyActivity.totalShares === "number");
     assert.ok(typeof report.weeklyActivity.totalEngagement === "number");
     assert.ok(Array.isArray(report.topPerformingPosts));
     assert.ok(report.engagementBreakdown);
@@ -156,11 +151,9 @@ describe("AnalyticsDashboard", () => {
           id: "post_1",
           message: "Test post",
           created_time: new Date().toISOString(),
-          type: "status",
           permalink_url: "https://fb.com/post_1",
-          likes: { summary: { total_count: 100 } },
+          reactions: { summary: { total_count: 100 } },
           comments: { summary: { total_count: 25 } },
-          shares: { count: 10 },
         };
       },
     });
@@ -172,9 +165,8 @@ describe("AnalyticsDashboard", () => {
     const metrics = await dashboard.getPostMetrics("post_1");
 
     assert.equal(metrics.id, "post_1");
-    assert.equal(metrics.metrics.likes, 100);
+    assert.equal(metrics.metrics.reactions, 100);
     assert.equal(metrics.metrics.comments, 25);
-    assert.equal(metrics.metrics.shares, 10);
-    assert.equal(metrics.metrics.totalEngagement, 135);
+    assert.equal(metrics.metrics.totalEngagement, 125);
   });
 });

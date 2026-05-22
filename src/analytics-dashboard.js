@@ -61,7 +61,7 @@ export class AnalyticsDashboard {
 
   async getRecentPosts({ limit = 25 } = {}) {
     const pageToken = await this.#getPageAccessToken();
-    const fields = "id,message,created_time,shares,likes.summary(true),comments.summary(true),type,permalink_url";
+    const fields = "id,message,created_time,reactions.summary(true),comments.summary(true),permalink_url";
     const url = `${GRAPH_API_BASE}/${this.#pageId}/posts?fields=${fields}&limit=${limit}&access_token=${pageToken}`;
     const res = await this.#fetchFn(url);
     const data = await res.json();
@@ -71,7 +71,7 @@ export class AnalyticsDashboard {
 
   async getPostMetrics(postId) {
     const pageToken = await this.#getPageAccessToken();
-    const fields = "id,message,created_time,shares,likes.summary(true),comments.summary(true),type,permalink_url";
+    const fields = "id,message,created_time,reactions.summary(true),comments.summary(true),permalink_url";
     const url = `${GRAPH_API_BASE}/${postId}?fields=${fields}&access_token=${pageToken}`;
     const res = await this.#fetchFn(url);
     const data = await res.json();
@@ -88,18 +88,16 @@ export class AnalyticsDashboard {
   }
 
   #normalizePostMetrics(post) {
-    const likes = post.likes?.summary?.total_count || 0;
+    const reactions = post.reactions?.summary?.total_count || 0;
     const comments = post.comments?.summary?.total_count || 0;
-    const shares = post.shares?.count || 0;
-    const totalEngagement = likes + comments + shares;
+    const totalEngagement = reactions + comments;
 
     return {
       id: post.id,
       message: post.message || "",
       createdAt: post.created_time,
-      type: post.type,
       permalink: post.permalink_url,
-      metrics: { likes, comments, shares, totalEngagement },
+      metrics: { reactions, comments, totalEngagement },
     };
   }
 
@@ -117,10 +115,9 @@ export class AnalyticsDashboard {
     const normalizedPosts = thisWeekPosts.map((p) => this.#normalizePostMetrics(p));
     const topPosts = [...normalizedPosts].sort((a, b) => b.metrics.totalEngagement - a.metrics.totalEngagement).slice(0, 5);
 
-    const totalLikes = normalizedPosts.reduce((sum, p) => sum + p.metrics.likes, 0);
+    const totalReactions = normalizedPosts.reduce((sum, p) => sum + p.metrics.reactions, 0);
     const totalComments = normalizedPosts.reduce((sum, p) => sum + p.metrics.comments, 0);
-    const totalShares = normalizedPosts.reduce((sum, p) => sum + p.metrics.shares, 0);
-    const totalEngagement = totalLikes + totalComments + totalShares;
+    const totalEngagement = totalReactions + totalComments;
     const avgEngagement = normalizedPosts.length > 0 ? totalEngagement / normalizedPosts.length : 0;
 
     const insightsSummary = {};
@@ -143,17 +140,15 @@ export class AnalyticsDashboard {
       },
       weeklyActivity: {
         postsPublished: normalizedPosts.length,
-        totalLikes,
+        totalReactions,
         totalComments,
-        totalShares,
         totalEngagement,
         avgEngagementPerPost: Math.round(avgEngagement * 100) / 100,
       },
       topPerformingPosts: topPosts,
       engagementBreakdown: {
-        likesPercent: totalEngagement > 0 ? Math.round((totalLikes / totalEngagement) * 100) : 0,
+        reactionsPercent: totalEngagement > 0 ? Math.round((totalReactions / totalEngagement) * 100) : 0,
         commentsPercent: totalEngagement > 0 ? Math.round((totalComments / totalEngagement) * 100) : 0,
-        sharesPercent: totalEngagement > 0 ? Math.round((totalShares / totalEngagement) * 100) : 0,
       },
       pageInsights: insightsSummary,
       contentROI: this.#calculateContentROI(normalizedPosts),
@@ -200,9 +195,8 @@ export class AnalyticsDashboard {
       `- **Posts Published:** ${report.weeklyActivity.postsPublished}`,
       `- **Total Engagement:** ${report.weeklyActivity.totalEngagement.toLocaleString()}`,
       `- **Avg Engagement/Post:** ${report.weeklyActivity.avgEngagementPerPost}`,
-      `- **Likes:** ${report.weeklyActivity.totalLikes} (${report.engagementBreakdown.likesPercent}%)`,
+      `- **Reactions:** ${report.weeklyActivity.totalReactions} (${report.engagementBreakdown.reactionsPercent}%)`,
       `- **Comments:** ${report.weeklyActivity.totalComments} (${report.engagementBreakdown.commentsPercent}%)`,
-      `- **Shares:** ${report.weeklyActivity.totalShares} (${report.engagementBreakdown.sharesPercent}%)`,
       ``,
       `## Top Performing Posts`,
     ];
@@ -210,7 +204,7 @@ export class AnalyticsDashboard {
     for (const [i, post] of report.topPerformingPosts.entries()) {
       const preview = post.message.slice(0, 80).replace(/\n/g, " ");
       lines.push(`${i + 1}. **"${preview}..."**`);
-      lines.push(`   Likes: ${post.metrics.likes} | Comments: ${post.metrics.comments} | Shares: ${post.metrics.shares}`);
+      lines.push(`   Reactions: ${post.metrics.reactions} | Comments: ${post.metrics.comments}`);
     }
 
     lines.push("", "## Content ROI");

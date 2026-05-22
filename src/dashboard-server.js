@@ -143,8 +143,8 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
   <div class="posts-table">
     <h3>Recent Posts Performance</h3>
     <table>
-      <thead><tr><th>Post</th><th class="num">Likes</th><th class="num">Comments</th><th class="num">Shares</th><th class="num">Engagement</th><th>Date</th></tr></thead>
-      <tbody id="postsBody"><tr><td colspan="6" class="loading">Loading posts...</td></tr></tbody>
+      <thead><tr><th>Post</th><th class="num">Reactions</th><th class="num">Comments</th><th class="num">Engagement</th><th>Date</th></tr></thead>
+      <tbody id="postsBody"><tr><td colspan="5" class="loading">Loading posts...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -269,16 +269,15 @@ async function loadPosts(){
   try{
     const d=await api('/api/posts?limit=25');
     const tbody=document.getElementById('postsBody');
-    if(!d.length){tbody.innerHTML='<tr><td colspan="6">No posts found</td></tr>';return}
+    if(!d.length){tbody.innerHTML='<tr><td colspan="5">No posts found</td></tr>';return}
     tbody.innerHTML=d.map(p=>{
-      const likes=p.likes?.summary?.total_count||0;
+      const reactions=p.reactions?.summary?.total_count||0;
       const comments=p.comments?.summary?.total_count||0;
-      const shares=p.shares?.count||0;
       const msg=(p.message||'(no text)').slice(0,80);
       const date=p.created_time?new Date(p.created_time).toLocaleDateString():'';
-      return '<tr><td title="'+esc(p.message||'')+'">'+esc(msg)+'</td><td class="num">'+fmt(likes)+'</td><td class="num">'+fmt(comments)+'</td><td class="num">'+fmt(shares)+'</td><td class="num"><strong>'+fmt(likes+comments+shares)+'</strong></td><td>'+date+'</td></tr>';
+      return '<tr><td title="'+esc(p.message||'')+'">'+esc(msg)+'</td><td class="num">'+fmt(reactions)+'</td><td class="num">'+fmt(comments)+'</td><td class="num"><strong>'+fmt(reactions+comments)+'</strong></td><td>'+date+'</td></tr>';
     }).join('');
-  }catch(e){document.getElementById('postsBody').innerHTML='<tr><td colspan="6" class="error">'+e.message+'</td></tr>'}
+  }catch(e){document.getElementById('postsBody').innerHTML='<tr><td colspan="5" class="error">'+e.message+'</td></tr>'}
 }
 
 function kpi(label,value,sub){return '<div class="kpi-card"><div class="label">'+esc(label)+'</div><div class="value">'+value+'</div>'+(sub?'<div class="sub">'+esc(sub)+'</div>':'')+'</div>'}
