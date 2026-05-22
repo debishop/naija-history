@@ -60,8 +60,9 @@ export class AnalyticsDashboard {
   }
 
   async getRecentPosts({ limit = 25 } = {}) {
+    const pageToken = await this.#getPageAccessToken();
     const fields = "id,message,created_time,shares,likes.summary(true),comments.summary(true),type,permalink_url";
-    const url = `${GRAPH_API_BASE}/${this.#pageId}/posts?fields=${fields}&limit=${limit}&access_token=${this.#accessToken}`;
+    const url = `${GRAPH_API_BASE}/${this.#pageId}/posts?fields=${fields}&limit=${limit}&access_token=${pageToken}`;
     const res = await this.#fetchFn(url);
     const data = await res.json();
     if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
@@ -69,12 +70,21 @@ export class AnalyticsDashboard {
   }
 
   async getPostMetrics(postId) {
+    const pageToken = await this.#getPageAccessToken();
     const fields = "id,message,created_time,shares,likes.summary(true),comments.summary(true),type,permalink_url";
-    const url = `${GRAPH_API_BASE}/${postId}?fields=${fields}&access_token=${this.#accessToken}`;
+    const url = `${GRAPH_API_BASE}/${postId}?fields=${fields}&access_token=${pageToken}`;
     const res = await this.#fetchFn(url);
     const data = await res.json();
     if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
     return this.#normalizePostMetrics(data);
+  }
+
+  async #getPageAccessToken() {
+    const url = `${GRAPH_API_BASE}/${this.#pageId}?fields=access_token&access_token=${this.#accessToken}`;
+    const res = await this.#fetchFn(url);
+    const data = await res.json();
+    if (data.error) throw new Error(`Failed to get page access token: ${data.error.message}`);
+    return data.access_token;
   }
 
   #normalizePostMetrics(post) {

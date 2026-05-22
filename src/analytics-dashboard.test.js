@@ -44,6 +44,7 @@ function createMockFetch(responses = {}) {
         fan_count: 5000,
         followers_count: 4800,
         talking_about_count: 320,
+        access_token: "page-token-mock",
       },
     };
   };
@@ -146,17 +147,22 @@ describe("AnalyticsDashboard", () => {
   });
 
   it("gets individual post metrics", async () => {
+    let callCount = 0;
     const mockFetch = async () => ({
-      json: async () => ({
-        id: "post_1",
-        message: "Test post",
-        created_time: new Date().toISOString(),
-        type: "status",
-        permalink_url: "https://fb.com/post_1",
-        likes: { summary: { total_count: 100 } },
-        comments: { summary: { total_count: 25 } },
-        shares: { count: 10 },
-      }),
+      json: async () => {
+        callCount++;
+        if (callCount === 1) return { access_token: "page-token-mock" };
+        return {
+          id: "post_1",
+          message: "Test post",
+          created_time: new Date().toISOString(),
+          type: "status",
+          permalink_url: "https://fb.com/post_1",
+          likes: { summary: { total_count: 100 } },
+          comments: { summary: { total_count: 25 } },
+          shares: { count: 10 },
+        };
+      },
     });
     const dashboard = new AnalyticsDashboard({
       pageId: "123",
