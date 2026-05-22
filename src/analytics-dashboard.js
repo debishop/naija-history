@@ -4,6 +4,12 @@ import { join } from "node:path";
 const DEFAULT_API_VERSION = "v25.0";
 const GRAPH_API_BASE = `https://graph.facebook.com/${process.env.FACEBOOK_GRAPH_API_VERSION || DEFAULT_API_VERSION}`;
 
+const DAY_ONLY_METRICS = new Set([
+  "page_fan_adds",
+  "page_fan_removes",
+  "page_actions_post_reactions_total",
+]);
+
 export class AnalyticsDashboard {
   #pageId;
   #accessToken;
@@ -48,12 +54,9 @@ export class AnalyticsDashboard {
       "page_views_total",
       "page_actions_post_reactions_total",
     ];
-    const metricList = (metrics || defaultMetrics).join(",");
-    const url = `${GRAPH_API_BASE}/${this.#pageId}/insights?metric=${metricList}&period=${period}&access_token=${this.#accessToken}`;
-    const res = await this.#fetchFn(url);
-    const data = await res.json();
-    if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
-    return data.data || [];
+    const allMetrics = metrics || defaultMetrics;
+    const results = await this.#fetchMetricsByPeriod(allMetrics, period);
+    return results;
   }
 
   async getRecentPosts({ limit = 25 } = {}) {
@@ -244,16 +247,11 @@ export class AnalyticsDashboard {
       "page_fan_adds",
       "page_views_total",
     ];
-    const metricList = (metrics || defaultMetrics).join(",");
-    let url = `${GRAPH_API_BASE}/${this.#pageId}/insights?metric=${metricList}&period=${period}&access_token=${this.#accessToken}`;
-    if (since) url += `&since=${Math.floor(new Date(since).getTime() / 1000)}`;
-    if (until) url += `&until=${Math.floor(new Date(until).getTime() / 1000)}`;
-    const res = await this.#fetchFn(url);
-    const data = await res.json();
-    if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
+    const allMetrics = metrics || defaultMetrics;
+    const results = await this.#fetchMetricsByPeriod(allMetrics, period, { since, until });
 
     const series = {};
-    for (const metric of data.data || []) {
+    for (const metric of results) {
       series[metric.name] = {
         title: metric.title,
         description: metric.description,
@@ -265,6 +263,30 @@ export class AnalyticsDashboard {
       };
     }
     return series;
+  }
+
+  async #fetchMetricsByPeriod(metrics, period, { since, until } = {}) {
+    const needsFallback = period !== "day";
+    const primaryMetrics = needsFallback ? metrics.filter((m) => !DAY_ONLY_METRICS.has(m)) : metrics;
+    const fallbackMetrics = needsFallback ? metrics.filter((m) => DAY_ONLY_METRICS.has(m)) : [];
+
+    const fetches = [];
+    if (primaryMetrics.length) fetches.push(this.#fetchInsights(primaryMetrics, period, { since, until }));
+    if (fallbackMetrics.length) fetches.push(this.#fetchInsights(fallbackMetrics, "day", { since, until }));
+
+    const batches = await Promise.all(fetches.map((p) => p.catch(() => [])));
+    return batches.flat();
+  }
+
+  async #fetchInsights(metrics, period, { since, until } = {}) {
+    const metricList = metrics.join(",");
+    let url = `${GRAPH_API_BASE}/${this.#pageId}/insights?metric=${metricList}&period=${period}&access_token=${this.#accessToken}`;
+    if (since) url += `&since=${Math.floor(new Date(since).getTime() / 1000)}`;
+    if (until) url += `&until=${Math.floor(new Date(until).getTime() / 1000)}`;
+    const res = await this.#fetchFn(url);
+    const data = await res.json();
+    if (data.error) throw new Error(`Facebook API error: ${data.error.message}`);
+    return data.data || [];
   }
 
   async saveReport(report, filename) {
