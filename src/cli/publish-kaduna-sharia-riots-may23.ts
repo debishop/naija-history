@@ -3,7 +3,7 @@
  * (The Lens Facebook Page, Today in Nigeria History — Saturday May 23, 2026)
  *
  * Two-image post. Images:
- *   1. Archbishop Josiah Idowu Fearon — CC BY 2.0 (via Wikimedia Commons)
+ *   1. Bishop Josiah Idowu-Fearon — CC BY 2.0 (via Wikimedia Commons)
  *   2. Kaduna River, Kaduna, Nigeria — CC BY-SA 4.0 (via Wikimedia Commons)
  *
  * Image source: Wikimedia Commons.
@@ -18,7 +18,7 @@ const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`;
 const IMAGE_1_URL =
   'https://upload.wikimedia.org/wikipedia/commons/6/63/Archbishop_Josiah_Fearon_OUR_DIFFERENCES_ARE_NOT_THE_CAUSE_OF_OUR_PROBLEMS._THEY%E2%80%99RE_OUR_SALVATION._%2822671495688%29_%28cropped%29.jpg';
 const IMAGE_1_CAPTION =
-  'Archbishop Josiah Idowu Fearon, Anglican Bishop of Kaduna and peace builder during the 2000 Kaduna Sharia Riots. He cofounded the Centre for the Study of Islam and Christianity and later became Secretary General of the Anglican Communion. Credit: via Wikimedia Commons (CC BY 2.0).';
+  'Bishop Josiah Idowu-Fearon, Anglican Bishop of Kaduna and peace builder during the 2000 Kaduna Sharia Riots. He cofounded the Centre for the Study of Islam and Christianity and later became Secretary General of the Anglican Communion. Credit: via Wikimedia Commons (CC BY 2.0).';
 
 const IMAGE_2_URL =
   'https://upload.wikimedia.org/wikipedia/commons/9/90/Kaduna_River%2C_Kaduna_%28Nigeria%29%2C_2007.JPG';
@@ -45,7 +45,7 @@ What came after the fire was nearly as devastating as the fire itself. Human Rig
 
 The city never looked the same again. Muslim residents concentrated in the north of Kaduna. Christian residents moved to the south. The violence accelerated calls to split Kaduna State into separate zones entirely. Streets that had once held both communities became quiet reminders of what had been lost. (Source: The New Humanitarian, "Focus: Tension Between Communities in Kaduna State," 2001)
 
-In the middle of all of this, a few voices refused to let the city fracture completely. Archbishop Josiah Idowu Fearon, the Anglican Bishop of Kaduna, became one of the most consequential peace builders of the crisis. Together with Muslim leaders, he established the Centre for the Study of Islam and Christianity and dedicated years to interfaith dialogue, insisting that the two religions shared far more than the violence had revealed. He later became Secretary General of the Anglican Communion, carrying the lessons he had learned in Kaduna to a global audience. (Source: Wikipedia, Josiah Idowu Fearon; Berkley Center, Georgetown University, "A Discussion with Bishop Josiah Fearon of Kaduna, Nigeria")
+In the middle of all of this, a few voices refused to let the city fracture completely. Bishop Josiah Idowu-Fearon, the Anglican Bishop of Kaduna, became one of the most consequential peace builders of the crisis. Together with Muslim leaders, he established the Centre for the Study of Islam and Christianity and dedicated years to interfaith dialogue, insisting that the two religions shared far more than the violence had revealed. He later became Secretary General of the Anglican Communion, carrying the lessons he had learned in Kaduna to a global audience. (Source: Wikipedia, Josiah Idowu-Fearon; Berkley Center, Georgetown University, "A Discussion with Bishop Josiah Fearon of Kaduna, Nigeria")
 
 The Kaduna Sharia Riots are widely described as the worst outbreak of violence in Nigeria since the Civil War. They remain a warning about how quickly a carefully managed diversity can become an unmanaged catastrophe. They are also a reminder that even in the worst moments, individual choices matter. (Source: Wikipedia, 2000 Kaduna riots)
 
@@ -53,7 +53,7 @@ Twenty five years later, the divided city remains divided. The question Kaduna q
 
 What do you think is the most important step for Nigerian communities to heal from religious or ethnic violence? Share your thoughts in the comments.
 
-Photos: (1) Archbishop Josiah Idowu Fearon, Anglican Bishop of Kaduna. Credit: via Wikimedia Commons (CC BY 2.0). (2) The Kaduna River, Kaduna, Nigeria. Credit: via Wikimedia Commons (CC BY SA 4.0).
+Photos: (1) Bishop Josiah Idowu-Fearon, Anglican Bishop of Kaduna. Credit: via Wikimedia Commons (CC BY 2.0). (2) The Kaduna River, Kaduna, Nigeria. Credit: via Wikimedia Commons (CC BY SA 4.0).
 
 #KadunaRiots #TodayInNigeriaHistory #NigerianHistory #TheLens #ReligiousViolence #NigeriaRemembers #KadunaState #NigeriaUnity #NeverAgain #PeaceBuilding #InterfaithNigeria`;
 
@@ -141,7 +141,7 @@ async function main(): Promise<void> {
   console.log('Resolving page access token...');
   const pageToken = await resolvePageAccessToken(pageId, systemUserToken);
 
-  console.log('Uploading image 1 (Archbishop Josiah Idowu Fearon)...');
+  console.log('Uploading image 1 (Bishop Josiah Idowu-Fearon)...');
   const photoId1 = await uploadPhoto(pageId, pageToken, IMAGE_1_URL, IMAGE_1_CAPTION);
   console.log(`Image 1 uploaded: ${photoId1}`);
 
