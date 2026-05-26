@@ -23,12 +23,12 @@ const IMAGE_1_CAPTION =
 const IMAGE_2_URL =
   'https://upload.wikimedia.org/wikipedia/commons/7/70/Benin_bronzes_british_museum_2023.JPG';
 const IMAGE_2_CAPTION =
-  'Benin Bronzes on display at the British Museum (2023) — more than 3,000 royal bronzes looted during the 1897 British Punitive Expedition. The restitution movement to return them to Nigeria is ongoing. Credit: Geni / Wikimedia Commons (CC BY-SA 4.0).';
+  'Benin Bronzes on display at the British Museum (2023). More than 3,000 royal bronzes looted during the 1897 British Punitive Expedition. The restitution movement to return them to Nigeria is ongoing. Credit: Geni / Wikimedia Commons (CC BY SA 4.0).';
 
 const IMAGE_3_URL =
   'https://upload.wikimedia.org/wikipedia/commons/1/16/Benin_Bronze.JPG';
 const IMAGE_3_CAPTION =
-  'Benin Bronze sculptural bust — an example of the extraordinary lost-wax casting technique mastered by Benin\'s royal craftsmen from the 14th century onward. Credit: Wikimedia Commons (Public Domain).';
+  'Benin Bronze sculptural bust, an example of the extraordinary lost wax casting technique mastered by Benin\'s royal craftsmen from the 14th century onward. Credit: Wikimedia Commons (Public Domain).';
 
 const POST_BODY = `Before Europe Had Its Renaissance, Benin Was Already a Superpower
 
@@ -38,7 +38,7 @@ This was Benin. Not a legend. A fact.
 
 A Kingdom Born from Greatness
 
-Around 1180 AD, the city of Benin was established — and by around 1200 AD, Oba Eweka I had founded the royal dynasty that would endure for centuries. Located in present day Edo State, Nigeria, Benin was not a simple chiefdom or village settlement. It was a sophisticated, organized state complete with a palace complex, a military structure, extensive trade networks, and a powerful administrative system that commanded respect across the entire region.
+Around 1180 AD, the city of Benin was established, and by around 1200 AD, Oba Eweka I had founded the royal dynasty that would endure for centuries. Located in present day Edo State, Nigeria, Benin was not a simple chiefdom or village settlement. It was a sophisticated, organized state complete with a palace complex, a military structure, extensive trade networks, and a powerful administrative system that commanded respect across the entire region.
 
 Then came the ruler who would take everything even further. Then came Oba Ewuare the Great.
 
@@ -56,7 +56,7 @@ Then in 1897, British forces stormed Benin City in what they called a Punitive E
 
 Walls That Shook the World
 
-Here is a fact that should be taught in every school across the continent. The Kingdom of Benin constructed an earthwork system measuring over 16,000 kilometres in total length, earning a Guinness World Record as the longest earthworks of the pre-mechanical era. The walls themselves reached up to 9 metres high, with a surrounding ditch reaching 17 metres from the bottom of the ditch to the top of the rampart.
+Here is a fact that should be taught in every school across the continent. The Kingdom of Benin constructed an earthwork system measuring over 16,000 kilometres in total length, earning a Guinness World Record as the longest earthworks of the premechanical era. The walls themselves reached up to 9 metres high, with a surrounding ditch reaching 17 metres from the bottom of the ditch to the top of the rampart.
 
 That is longer than the Great Wall of China.
 
@@ -74,7 +74,7 @@ The question now is whether we will claim it.
 
 The Benin Kingdom's walls were longer than the Great Wall of China, yet most of us never learned this in school. What part of Nigeria's precolonial history shocked you the most when you first discovered it?
 
-Photos: (1) Brass Head of an Oba (18th century), Brooklyn Museum. Credit: Brooklyn Museum / Wikimedia Commons (CC BY 3.0). (2) Benin Bronzes at the British Museum (2023). Credit: Geni / Wikimedia Commons (CC BY-SA 4.0). (3) Benin Bronze sculptural bust. Credit: Wikimedia Commons (Public Domain).
+Photos: (1) Brass Head of an Oba (18th century), Brooklyn Museum. Credit: Brooklyn Museum / Wikimedia Commons (CC BY 3.0). (2) Benin Bronzes at the British Museum (2023). Credit: Geni / Wikimedia Commons (CC BY SA 4.0). (3) Benin Bronze sculptural bust. Credit: Wikimedia Commons (Public Domain).
 
 #KingdomOfBenin #BeninBronzes #NigerianHistory #PrecolonialAfrica #BeninWalls #AfricanHeritage #EdoHistory #NigeriaProud #AfricanCivilization #ObaEwuare #TheLens #NigerianHeritage #BlackHistory`;
 
