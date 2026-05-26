@@ -1,0 +1,27 @@
+name: Diagnose and Fix Ads
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  diagnose-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Diagnose and fix ads
+        run: doppler run -- npx ts-node src/cli/diagnose-fix-ads.ts
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
