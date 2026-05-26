@@ -180,7 +180,7 @@ async function checkCampaign(campaignId: string, label: string): Promise<void> {
 async function checkAdCreative(adId: string): Promise<void> {
   console.log(`\n--- Creative for ad ${adId} ---`);
   try {
-    const data = await apiGet(adId, { fields: 'creative{id,name,status,object_story_id,object_story_spec,review_feedback_summary}' }) as Record<string, unknown>;
+    const data = await apiGet(adId, { fields: 'creative{id,name,status,object_story_id,object_story_spec}' }) as Record<string, unknown>;
     const creative = data['creative'] as Record<string, unknown> | undefined;
     if (!creative) {
       console.log('  No creative data returned');
