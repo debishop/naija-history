@@ -5,11 +5,34 @@
  * Single-image post. Image:
  *   1. Hafsat Abiola (daughter of Kudirat Abiola, founder of KIND) — CC BY 2.0 (Wikimedia Commons)
  *      Source: The Institute for Inclusive Security via Flickr / Wikimedia Commons
+ *      URL: https://upload.wikimedia.org/wikipedia/commons/7/7b/Hafsat_Abiola_Nigerian_activist.jpg
  *      Note: No freely licensed photograph of Kudirat Abiola herself exists on Wikimedia Commons.
  *            The only known image is marked "fair use" on Wikipedia and cannot be used commercially.
  *
+ * Additional visual assets (not in this post, available for repurposing):
+ *   2. Campaign for Democracy members at Kudirat Abiola's gravesite, 19th anniversary commemoration
+ *      Photographer: Idowu Ogunleye / PM News
+ *      License: Editorial use only (PM News copyright — not freely licensed)
+ *      Source: https://cdn.pmnewsnigeria.com/2015/06/Kudirat-.jpg
+ *      Note: Image is accessible and shows CD members at the Ikeja gravesite (2015).
+ *            Requires PM News permission for commercial/branded use.
+ *
+ * Archive video (included in post body):
+ *   "The Supreme Price" (2014) — official trailer
+ *   Director: Joanna Lipper | Distributor: Women Make Movies
+ *   YouTube: https://www.youtube.com/watch?v=QRsmWeXJx4U
+ *   Note: Feature-length documentary (75 min) about Hafsat Abiola and Nigeria's pro-democracy
+ *         movement. Commissioned trailer also screened at TED 2013 for Gucci's Chime for Change.
+ *
+ * Additional YouTube resources (for future repurposing):
+ *   - "Killing Of Kudirat Abiola | TODAY IN HISTORY": https://www.youtube.com/watch?v=kSoKTCmyYDc
+ *   - "Remembering Kudirat Abiola, the pro-democracy activist": https://www.youtube.com/watch?v=ASVdAe5dDhM
+ *   - "Kudirat Abiola: Activists Seek Justice 27 Years After": https://www.youtube.com/watch?v=FRGEOdrwL9w
+ *   - "Remembering Kudirat Abiola: 26years After": https://www.youtube.com/watch?v=1_vebAeuTGs
+ *   - "STORY OF THE ASSASSINATION OF KUDIRAT ABIOLA": https://www.youtube.com/watch?v=UqSpxgIlNyw
+ *
  * Draft sourced from THEAAA-730. Research brief from THEAAA-730 issue description.
- * Word count: ~645 words (within 600–700 requirement).
+ * Visual assets: THEAAA-767. Word count: ~645 words (within 600–700 requirement).
  */
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -61,6 +84,8 @@ She was 44 years old. She was fearless. She was Nigeria.
 Today, we remember Alhaja Kudirat Abiola.
 
 What does her sacrifice mean to you? And do you believe justice for her murder will ever truly be served in Nigeria?
+
+Watch the documentary that told her story to the world: https://www.youtube.com/watch?v=QRsmWeXJx4U
 
 Photo: Hafsat Abiola, daughter of Kudirat Abiola, founder of the Kudirat Initiative for Democracy (KIND). Credit: The Institute for Inclusive Security (CC BY 2.0).
 
