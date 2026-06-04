@@ -53,7 +53,7 @@ Akinkunmi returned to Nigeria and lived most of his life as a quiet civil servan
 
 What the Founders Built
 
-The years immediately following independence were a season of genuine nation building. Under Balewa's administration, the University of Nigeria at Nsukka was established in 1960, offering Nigerians access to world class higher education on home soil. The First National Development Plan, launched in 1962, allocated approximately 2.2 billion British pounds toward infrastructure, agriculture, industry, and education. Nigeria joined the United Nations in October 1960 and quickly became a leading voice for African solidarity on the world stage. (Source: Wikipedia, "First Nigerian Republic")
+The years immediately following independence were a season of genuine nation building. Under Balewa's administration, the University of Nigeria at Nsukka was established in 1960, offering Nigerians access to world class higher education on home soil. The First National Development Plan, launched in 1962, allocated approximately £676.8 million toward infrastructure, agriculture, industry, and education. Nigeria joined the United Nations in October 1960 and quickly became a leading voice for African solidarity on the world stage. (Source: Wikipedia, "First Nigerian Republic")
 
 The dream, however, faced an early and brutal interruption. On January 15, 1966, a military coup overthrew the government and assassinated Balewa, ending the First Republic.
 
