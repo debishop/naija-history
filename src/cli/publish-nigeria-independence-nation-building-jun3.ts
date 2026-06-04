@@ -9,7 +9,21 @@
  *      License: Public Domain (published 1960; 50+ years elapsed, public domain in Nigeria and US)
  *      Source: Wikimedia Commons
  *
- * Draft sourced from THEAAA-733. Research brief from THEAAA-732.
+ * Additional visual assets (not in this post, available for repurposing):
+ *   2. Azikiwe swearing Balewa as Prime Minister, 1960
+ *      Photographer: Private Photo Library Eko Adele / Emi Ni Afrika
+ *      License: Public Domain (Nigeria Copyright Act, 50+ years)
+ *      Source: https://upload.wikimedia.org/wikipedia/commons/8/81/Azikiwe_swearing_Balewa_as_prime_minister%2C_1960.jpg
+ *   3. Ahmadu Bello at Nigerian Independence Celebration in Lagos, October 1, 1960
+ *      Photographer: Moneta Sleet Jr.
+ *      License: Public Domain (Nigeria Copyright Act, 50+ years) — Source: Saint Louis Art Museum
+ *      Source: https://upload.wikimedia.org/wikipedia/commons/a/ab/Ahmadu_Bello_at_Nigerian_Independence_Celebration_in_Lagos.png
+ *
+ * Archive video (included in post body):
+ *   "Nigerian Independence Day: Incredible Archive Footage Captures Nigeria's New Beginnings (1960)"
+ *   YouTube: https://www.youtube.com/watch?v=arpys66YjFE
+ *
+ * Draft sourced from THEAAA-733. Research brief from THEAAA-732. Visual assets: THEAAA-735.
  * Word count: ~640 words (within 600-700 requirement).
  */
 import * as dotenv from 'dotenv';
@@ -62,6 +76,8 @@ The Unfinished Vision
 Sixty five years after independence, the story of October 1, 1960, is not simply history. It is a mirror. Balewa's vision of a Nigeria that serves Africa and the world remains both an aspiration and a challenge. The flag Akinkunmi drew still flies. The question is whether its promise is being kept.
 
 What does Nigerian independence mean to you today? Share your thoughts below.
+
+Watch rare archive footage from independence night: https://www.youtube.com/watch?v=arpys66YjFE
 
 #NigerianIndependence #October1st #NigeriaAt65 #AfricanHistory #NigerianHistory #TafawaBalewa #NnamdiAzikiwe #TheLensNigeria #NigeriaStrong #ProudlyNigerian #AfricanPride #IndependenceDay #NaijaPride`;
 
