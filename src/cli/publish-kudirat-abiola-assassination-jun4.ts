@@ -107,17 +107,17 @@ async function resolvePageAccessToken(pageId: string, token: string): Promise<st
   return json.access_token ?? token;
 }
 
-async function uploadPhoto(
+async function publishPhotoWithCaption(
   pageId: string,
   pageToken: string,
   imageUrl: string,
-  caption: string,
+  message: string,
 ): Promise<string> {
   const url = `${GRAPH_API_BASE}/${pageId}/photos`;
   const body = new URLSearchParams({
     url: imageUrl,
-    caption,
-    published: 'false',
+    message,
+    published: 'true',
     access_token: pageToken,
   });
 
@@ -127,36 +127,11 @@ async function uploadPhoto(
     body: body.toString(),
   });
 
-  const json = (await response.json()) as { id?: string; error?: GraphApiError };
-  if (!response.ok || json.error || !json.id) {
-    throw new Error(`Photo upload failed: ${json.error?.message ?? `HTTP ${response.status}`}`);
-  }
-  return json.id;
-}
-
-async function publishWithPhoto(
-  pageId: string,
-  pageToken: string,
-  photoId: string,
-): Promise<string> {
-  const url = `${GRAPH_API_BASE}/${pageId}/feed`;
-  const params = new URLSearchParams({
-    message: POST_BODY,
-    access_token: pageToken,
-  });
-  params.append('attached_media[0]', `{"media_fbid":"${photoId}"}`);
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params.toString(),
-  });
-
-  const json = (await response.json()) as { id?: string; error?: GraphApiError };
+  const json = (await response.json()) as { id?: string; post_id?: string; error?: GraphApiError };
   if (!response.ok || json.error || !json.id) {
     throw new Error(`Publish failed: ${json.error?.message ?? `HTTP ${response.status}`}`);
   }
-  return json.id;
+  return json.post_id ?? json.id;
 }
 
 async function main(): Promise<void> {
@@ -173,12 +148,10 @@ async function main(): Promise<void> {
   console.log('Resolving page access token...');
   const pageToken = await resolvePageAccessToken(pageId, systemUserToken);
 
-  console.log('Uploading image (Hafsat Abiola)...');
-  const photoId = await uploadPhoto(pageId, pageToken, IMAGE_URL, IMAGE_CAPTION);
-  console.log(`Image uploaded: ${photoId}`);
+  const caption = `${POST_BODY}\n\n${IMAGE_CAPTION}`;
 
-  console.log('Publishing post...');
-  const postId = await publishWithPhoto(pageId, pageToken, photoId);
+  console.log('Publishing photo post (Hafsat Abiola + caption)...');
+  const postId = await publishPhotoWithCaption(pageId, pageToken, IMAGE_URL, caption);
 
   const postUrl = `https://www.facebook.com/${postId}`;
   console.log(`Published: ${postUrl}`);
