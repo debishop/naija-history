@@ -38,13 +38,13 @@ Who Was Kudirat Abiola?
 
 Kudirat was the senior wife of Chief MKO Abiola, the man who had won Nigeria's presidential election on June 12, 1993, in a contest widely described as the freest and fairest in the country's history. (Sources: Wikipedia; Historical Nigeria) When General Babangida's military government annulled those results, and when Sani Abacha later seized power and imprisoned MKO Abiola on treason charges in 1994, Kudirat did not retreat. She stepped forward.
 
-She organized oil workers' strikes, rallied market women, students, and civil servants across the country. She co organized a 12 week oil workers' strike in 1994, one of the longest in African history, forcing international attention onto Abacha's brutal military regime. (Sources: Historical Nigeria; Pulse Nigeria) She became the undeniable face of resistance, standing in the public square where her husband could not.
+She organized oil workers' strikes, rallied market women, students, and civil servants across the country. She co organized an eight week oil workers' strike in 1994, forcing international attention onto Abacha's brutal military regime. (Sources: Historical Nigeria; Pulse Nigeria) She became the undeniable face of resistance, standing in the public square where her husband could not.
 
 She was not a politician. She was a wife and a mother who chose her country over her own safety, and she ultimately paid the highest price for that courage.
 
 Who Killed Her?
 
-General Abacha's Chief Security Officer, Major Hamza Al Mustapha, was charged with ordering the assassination. Kudirat's personal assistant, Alhaji Lateef Shofolahan, was alleged to have betrayed her location to the killers. (Sources: Wikipedia; Pulse Nigeria) Both were sentenced to death by hanging in June 2012, but a Lagos court released them on appeal in July 2013.
+General Abacha's Chief Security Officer, Major Hamza Al Mustapha, was charged with ordering the assassination. Kudirat's personal assistant, Alhaji Lateef Shofolahan, was alleged to have betrayed her location to the killers. (Sources: Wikipedia; Pulse Nigeria) Both were sentenced to death by hanging in January 2012, but a Lagos court released them on appeal in July 2013.
 
 As of 2025, no one has been definitively convicted for her murder. In March 2025, the ECOWAS court dismissed the family's suit entirely. (Source: Wikipedia) Justice, for Kudirat Abiola, remains an open wound that Nigeria has yet to close.
 
