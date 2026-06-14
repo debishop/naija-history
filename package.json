@@ -19,7 +19,8 @@
     "cli:approve-post": "ts-node src/cli/approve-post.ts",
     "cli:check-snapshots": "ts-node src/cli/check-snapshots.ts",
     "cli:direct-publish": "ts-node src/cli/direct-publish.ts",
-    "cli:check-token-health": "ts-node src/cli/check-token-health.ts"
+    "cli:check-token-health": "ts-node src/cli/check-token-health.ts",
+    "cli:publish-approved-post": "ts-node src/cli/publish-approved-post.ts"
   },
   "keywords": [],
   "author": "",
